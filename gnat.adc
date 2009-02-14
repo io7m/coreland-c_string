@@ -1,0 +1,8 @@
+
+-- ./c_string.apk
+pragma source_file_name(C_String, spec_file_name => "c_string.ads");
+pragma source_file_name(C_String, body_file_name => "c_string.adb");
+
+-- UNIT_TESTS/test.apk
+pragma source_file_name(test, spec_file_name => "test.ads");
+pragma source_file_name(test, body_file_name => "test.adb");
