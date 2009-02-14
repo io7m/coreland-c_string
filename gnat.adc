@@ -1,4 +1,8 @@
 
+-- ./c_string-arrays.apk
+pragma source_file_name(C_String.Arrays, spec_file_name => "c_string-arrays.ads");
+pragma source_file_name(C_String.Arrays, body_file_name => "c_string-arrays.adb");
+
 -- ./c_string.apk
 pragma source_file_name(C_String, spec_file_name => "c_string.ads");
 pragma source_file_name(C_String, body_file_name => "c_string.adb");

@@ -2,7 +2,7 @@ with C_String;
 with Interfaces.C;
 with test;
 
-procedure str1 is
+procedure t_str1 is
   package C renames Interfaces.C;
 
   use type C.size_t;
@@ -135,4 +135,4 @@ begin
      pass_message => "caught null_termination_error",
      fail_message => "failed to catch null_termination_error");
 
-end str1;
+end t_str1;
