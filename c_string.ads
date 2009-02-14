@@ -3,15 +3,22 @@ with Interfaces.C.Strings;
 
 package C_String is
 
+  --
+  -- Terminated C string pointer type.
+  --
+
   type String_t is access all Interfaces.C.char;
   pragma Convention (C, String_t);
   pragma No_Strict_Aliasing (String_t);
+  subtype String_Not_Null_t is not null String_t;
+
+  --
+  -- Unterminated C char array pointer type.
+  --
 
   type Char_Array_t is access all Interfaces.C.char;
   pragma Convention (C, Char_Array_t);
   pragma No_Strict_Aliasing (Char_Array_t);
-
-  subtype String_Not_Null_t is not null String_t;
   subtype Char_Array_Not_Null_t is not null Char_Array_t;
 
   --

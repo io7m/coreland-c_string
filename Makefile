@@ -6,6 +6,12 @@ all:\
 UNIT_TESTS/cstr.o UNIT_TESTS/str1 UNIT_TESTS/str1.ali UNIT_TESTS/str1.o \
 UNIT_TESTS/test.a UNIT_TESTS/test.ali UNIT_TESTS/test.o c_string.ali c_string.o
 
+# Mkf-test
+tests:
+	(cd UNIT_TESTS && make)
+tests_clean:
+	(cd UNIT_TESTS && make clean)
+
 UNIT_TESTS/cstr.o:\
 cc-compile UNIT_TESTS/cstr.c
 	./cc-compile UNIT_TESTS/cstr.c
@@ -100,7 +106,7 @@ conf-cc conf-ld
 mk-systype:\
 conf-cc conf-ld
 
-clean-all: obj_clean ext_clean
+clean-all: tests_clean obj_clean ext_clean
 clean: obj_clean
 obj_clean:
 	rm -f UNIT_TESTS/cstr.o UNIT_TESTS/str1 UNIT_TESTS/str1.ali UNIT_TESTS/str1.o \
