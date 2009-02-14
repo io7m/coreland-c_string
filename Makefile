@@ -210,6 +210,10 @@ conf-ldtype:\
 conf-ld mk-ldtype
 	./mk-ldtype > conf-ldtype.tmp && mv conf-ldtype.tmp conf-ldtype
 
+conf-sosuffix:\
+mk-sosuffix
+	./mk-sosuffix > conf-sosuffix.tmp && mv conf-sosuffix.tmp conf-sosuffix
+
 conf-systype:\
 mk-systype
 	./mk-systype > conf-systype.tmp && mv conf-systype.tmp conf-systype
@@ -343,6 +347,9 @@ conf-ld conf-systype conf-cctype
 mk-mk-ctxt:\
 conf-cc conf-ld
 
+mk-sosuffix:\
+conf-systype
+
 mk-systype:\
 conf-cc conf-ld
 
@@ -363,7 +370,7 @@ obj_clean:
 	install-error.o install-posix.o install-win32.o install.a installer installer.o \
 	instchk instchk.o insthier.o
 ext_clean:
-	rm -f conf-adatype conf-cctype conf-ldtype conf-systype mk-ctxt
+	rm -f conf-adatype conf-cctype conf-ldtype conf-sosuffix conf-systype mk-ctxt
 
 regen:\
 ada-srcmap ada-srcmap-all
