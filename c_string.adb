@@ -75,7 +75,7 @@ package body C_String is
     (Item : not null C.Strings.char_array_access) return String_Ptr_t is
   begin
     if Has_Null (Item.all) then
-      return To_C_String (Item (Item'First)'Address);
+      return To_C_String (Item.all (Item'First)'Address);
     else
       raise Null_Termination_Error;
     end if;
@@ -84,7 +84,7 @@ package body C_String is
   function To_C_Char_Array
     (Item : not null C.Strings.char_array_access) return Char_Array_Ptr_t is
   begin
-    return To_C_String (Item (Item'First)'Address);
+    return To_C_String (Item.all (Item'First)'Address);
   end To_C_Char_Array;
 
   function Index
