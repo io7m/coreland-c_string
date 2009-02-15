@@ -12,45 +12,45 @@ package body C_String is
   use type System.Address;
 
   function To_Address is new Ada.Unchecked_Conversion
-    (source => Char_Array_t, Target => System.Address);
+    (source => Char_Array_Ptr_t, Target => System.Address);
 
   function To_C_String is new Ada.Unchecked_Conversion
-    (source => System.Address, Target => Char_Array_t);
+    (source => System.Address, Target => Char_Array_Ptr_t);
   function To_C_String is new Ada.Unchecked_Conversion
-    (source => System.Address, Target => String_t);
+    (source => System.Address, Target => String_Ptr_t);
 
   --
   -- Item [Index], without checking for terminating null.
   --
 
   function Unsafe_Index
-    (Item  : in Char_Array_Not_Null_t;
+    (Item  : in Char_Array_Not_Null_Ptr_t;
      Index : in C.size_t) return C.char
   is
     Base_Address : constant System.Address := To_Address (Item);
     Offset       : constant Storage_Elements.Storage_Offset :=
                      Storage_Elements.Storage_Offset (Index);
     New_Address  : constant System.Address := Base_Address + Offset;
-    New_Ptr      : constant Char_Array_t := To_C_String (New_Address);
+    New_Ptr      : constant Char_Array_Ptr_t := To_C_String (New_Address);
   begin
     return New_Ptr.all;
   end Unsafe_Index;
   pragma Inline (Unsafe_Index);
 
   function To_String
-    (Item : String_Not_Null_t) return string
+    (Item : String_Not_Null_Ptr_t) return string
   is
     Result : string (1 .. integer (Length (Item)));
   begin
     for I in Result'Range loop
       Result (I) := C.To_Ada (Unsafe_Index
-        (Char_Array_Not_Null_t (Item), C.size_t (I - 1)));
+        (Char_Array_Not_Null_Ptr_t (Item), C.size_t (I - 1)));
     end loop;
     return Result;
   end To_String;
 
   function To_String
-    (Item : Char_Array_Not_Null_t;
+    (Item : Char_Array_Not_Null_Ptr_t;
      Size : in C.size_t) return string
   is
     Result : string (1 .. integer (Size));
@@ -72,7 +72,7 @@ package body C_String is
   end Has_Null;
 
   function To_C_String
-    (Item : not null C.Strings.char_array_access) return String_t is
+    (Item : not null C.Strings.char_array_access) return String_Ptr_t is
   begin
     if Has_Null (Item.all) then
       return To_C_String (Item (Item'First)'Address);
@@ -82,23 +82,23 @@ package body C_String is
   end To_C_String;
 
   function To_C_Char_Array
-    (Item : not null C.Strings.char_array_access) return Char_Array_t is
+    (Item : not null C.Strings.char_array_access) return Char_Array_Ptr_t is
   begin
     return To_C_String (Item (Item'First)'Address);
   end To_C_Char_Array;
 
   function Index
-    (Item  : in String_Not_Null_t;
+    (Item  : in String_Not_Null_Ptr_t;
      Index : in C.size_t) return C.char is
   begin
     if Index >= Length (Item) then
       raise Constraint_Error with "index out of range";
     end if;
-    return Unsafe_Index (Char_Array_Not_Null_t (Item), Index);
+    return Unsafe_Index (Char_Array_Not_Null_Ptr_t (Item), Index);
   end Index;
 
   function Index
-    (Item  : in Char_Array_Not_Null_t;
+    (Item  : in Char_Array_Not_Null_Ptr_t;
      Size  : in C.size_t;
      Index : in C.size_t) return C.char is
   begin
@@ -109,12 +109,12 @@ package body C_String is
   end Index;
 
   function Length
-    (Item : String_Not_Null_t) return C.size_t
+    (Item : String_Not_Null_Ptr_t) return C.size_t
   is
     char : C.char;
   begin
     for I in C.size_t'Range loop
-      char := Unsafe_Index (Char_Array_Not_Null_t (Item), I);
+      char := Unsafe_Index (Char_Array_Not_Null_Ptr_t (Item), I);
       if char = C.nul then
         return I;
       end if;

@@ -6,9 +6,9 @@ package body C_String.Arrays is
   package UStrings renames Ada.Strings.Unbounded;
 
   package Memory is new System.Address_To_Access_Conversions
-    (object => C_String.String_t);
+    (object => C_String.String_Ptr_t);
 
-  use type C_String.String_t;
+  use type C_String.String_Ptr_t;
   use type Memory.Object_Pointer;
   use type System.Storage_Elements.Storage_Offset;
 
