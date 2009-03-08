@@ -27,6 +27,7 @@ package C_String is
 
   function To_String
     (Item : in String_Not_Null_Ptr_t) return string;
+
   function To_String
     (Item : in Char_Array_Not_Null_Ptr_t;
      Size : in Interfaces.C.size_t) return string;
@@ -37,6 +38,7 @@ package C_String is
 
   function To_C_String
     (Item : in not null Interfaces.C.Strings.char_array_access) return String_Ptr_t;
+
   function To_C_Char_Array
     (Item : in not null Interfaces.C.Strings.char_array_access) return Char_Array_Ptr_t;
 
@@ -47,6 +49,7 @@ package C_String is
   function Index
     (Item  : in String_Not_Null_Ptr_t;
      Index : in Interfaces.C.size_t) return Interfaces.C.char;
+
   function Index
     (Item  : in Char_Array_Not_Null_Ptr_t;
      Size  : in Interfaces.C.size_t;
