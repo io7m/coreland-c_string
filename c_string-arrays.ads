@@ -6,7 +6,7 @@ package C_String.Arrays is
   subtype Pointer_Array_t is System.Address;
   null_ptr : constant Pointer_Array_t := System.Null_Address;
 
-  type String_Array_t is array (natural range <>) of
+  type String_Array_t is array (Natural range <>) of
     Ada.Strings.Unbounded.Unbounded_String;
 
   --
@@ -14,7 +14,7 @@ package C_String.Arrays is
   --
 
   function Size_Terminated
-    (Pointer : Pointer_Array_t) return natural;
+    (Pointer : Pointer_Array_t) return Natural;
 
   --
   -- array_ptr [Index]
@@ -22,21 +22,21 @@ package C_String.Arrays is
 
   function Index
     (Pointer : Pointer_Array_t;
-     Size    : natural;
-     Index   : natural) return string;
+     Size    : Natural;
+     Index   : Natural) return String;
 
   function Index
     (Pointer : Pointer_Array_t;
-     Size    : natural;
-     Index   : natural) return Ada.Strings.Unbounded.Unbounded_String;
+     Size    : Natural;
+     Index   : Natural) return Ada.Strings.Unbounded.Unbounded_String;
 
   function Index_Terminated
     (Pointer : Pointer_Array_t;
-     Index   : natural) return string;
+     Index   : Natural) return String;
 
   function Index_Terminated
     (Pointer : Pointer_Array_t;
-     Index   : natural) return Ada.Strings.Unbounded.Unbounded_String;
+     Index   : Natural) return Ada.Strings.Unbounded.Unbounded_String;
 
   --
   -- for (Index = 0; Index < Size; ++Index)
@@ -45,6 +45,6 @@ package C_String.Arrays is
 
   function Convert
     (Pointer : Pointer_Array_t;
-     Size    : natural) return String_Array_t;
+     Size    : Natural) return String_Array_t;
 
 end C_String.Arrays;

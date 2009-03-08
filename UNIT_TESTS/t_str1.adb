@@ -29,7 +29,7 @@ procedure t_str1 is
   size         : aliased C.size_t;
   hello_length : constant := 5;
   length       : C.size_t;
-  caught       : boolean := false;
+  caught       : Boolean := False;
 
 begin
   terminated := term1;
@@ -43,12 +43,12 @@ begin
      fail_message => "term1 Length = " & C.size_t'Image (length));
 
   declare
-    Result : constant string := C_String.To_String (terminated);
+    Result : constant String := C_String.To_String (terminated);
   begin
     test.assert
       (check        => Result'Length = hello_length,
-       pass_message => "term1 Result'Length = " & integer'Image (Result'Length),
-       fail_message => "term1 Result'Length = " & integer'Image (Result'Length));
+       pass_message => "term1 Result'Length = " & Integer'Image (Result'Length),
+       fail_message => "term1 Result'Length = " & Integer'Image (Result'Length));
     test.assert
       (check        => Result = "hello",
        pass_message => "term1 Result = " & Result,
@@ -64,12 +64,12 @@ begin
      fail_message => "unterm1 size = " & C.size_t'Image (size));
 
   declare
-    Result : constant string := C_String.To_String (unterminated, size);
+    Result : constant String := C_String.To_String (unterminated, size);
   begin
     test.assert
       (check        => Result'Length = hello_length,
-       pass_message => "unterm1 Result'Length = " & integer'Image (Result'Length),
-       fail_message => "unterm1 Result'Length = " & integer'Image (Result'Length));
+       pass_message => "unterm1 Result'Length = " & Integer'Image (Result'Length),
+       fail_message => "unterm1 Result'Length = " & Integer'Image (Result'Length));
     test.assert
       (check        => Result = "hello",
        pass_message => "unterm1 Result = " & Result,
@@ -81,13 +81,13 @@ begin
   declare
     C_Array : aliased C.char_array := C.To_C ("hello", Append_Nul => True);
     C_Term  : constant C_String.String_Ptr_t := C_String.To_C_String (C_Array'Unchecked_Access);
-    Result  : constant string := C_String.To_String (C_Term);
+    Result  : constant String := C_String.To_String (C_Term);
   begin
     term2 (C_Term);
     test.assert
       (check        => Result'Length = 5,
-       pass_message => "term2 Result'Length = " & integer'Image (Result'Length),
-       fail_message => "term2 Result'Length = " & integer'Image (Result'Length));
+       pass_message => "term2 Result'Length = " & Integer'Image (Result'Length),
+       fail_message => "term2 Result'Length = " & Integer'Image (Result'Length));
     test.assert
       (check        => Result = "hello",
        pass_message => "term2 Result = " & Result,
@@ -97,16 +97,16 @@ begin
   -- check creation of unterminated character arrays.
 
   declare
-    Source   : constant string := "hello" & ASCII.nul & "hello";
+    Source   : constant String := "hello" & ASCII.nul & "hello";
     C_Array  : aliased C.char_array := C.To_C (Source, Append_Nul => False);
     C_Unterm : constant C_String.Char_Array_Ptr_t := C_String.To_C_Char_Array (C_Array'Unchecked_Access);
-    Result   : constant string := C_String.To_String (C_Unterm, C_Array'Length);
+    Result   : constant String := C_String.To_String (C_Unterm, C_Array'Length);
   begin
     unterm2 (C_Unterm, C_Array'Length);
     test.assert
       (check        => Result'Length = Source'Length,
-       pass_message => "term2 Result'Length = " & integer'Image (Result'Length),
-       fail_message => "term2 Result'Length = " & integer'Image (Result'Length));
+       pass_message => "term2 Result'Length = " & Integer'Image (Result'Length),
+       fail_message => "term2 Result'Length = " & Integer'Image (Result'Length));
     test.assert
       (check        => Result = Source,
        pass_message => "term2 Result = " & Result,
@@ -115,7 +115,7 @@ begin
 
   -- check null termination error
 
-  caught := false;
+  caught := False;
   begin
     declare
       C_Array : aliased C.char_array := C.To_C ("hello", Append_Nul => False);
@@ -127,7 +127,7 @@ begin
     end;
   exception
     when C_String.Null_Termination_Error =>
-      caught := true;
+      caught := True;
   end;
 
   test.assert

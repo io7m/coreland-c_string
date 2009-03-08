@@ -1,8 +1,8 @@
 package test is
 
   procedure assert
-    (check        : in boolean;
-     pass_message : in string := "assertion passed";
-     fail_message : in string := "assertion failed");
+    (check        : in Boolean;
+     pass_message : in String := "assertion passed";
+     fail_message : in String := "assertion failed");
 
 end test;

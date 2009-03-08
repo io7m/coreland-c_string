@@ -3,13 +3,13 @@ with Ada.Text_IO;
 package body test is
   package IO renames Ada.Text_IO;
 
-  procedure sys_exit (ecode : integer);
+  procedure sys_exit (ecode : Integer);
   pragma Import (c, sys_exit, "exit");
 
   procedure assert
-    (check        : in boolean;
-     pass_message : in string := "assertion passed";
-     fail_message : in string := "assertion failed") is
+    (check        : in Boolean;
+     pass_message : in String := "assertion passed";
+     fail_message : in String := "assertion failed") is
   begin
     if check then
       IO.Put_Line (IO.Current_Error, "pass: " & pass_message);

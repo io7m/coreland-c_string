@@ -26,11 +26,11 @@ package C_String is
   --
 
   function To_String
-    (Item : in String_Not_Null_Ptr_t) return string;
+    (Item : in String_Not_Null_Ptr_t) return String;
 
   function To_String
     (Item : in Char_Array_Not_Null_Ptr_t;
-     Size : in Interfaces.C.size_t) return string;
+     Size : in Interfaces.C.size_t) return String;
 
   --
   -- Convert Ada string to terminated or unterminated Ada string.

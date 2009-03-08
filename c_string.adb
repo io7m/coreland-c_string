@@ -38,9 +38,9 @@ package body C_String is
   pragma Inline (Unsafe_Index);
 
   function To_String
-    (Item : String_Not_Null_Ptr_t) return string
+    (Item : String_Not_Null_Ptr_t) return String
   is
-    Result : string (1 .. integer (Length (Item)));
+    Result : String (1 .. Integer (Length (Item)));
   begin
     for I in Result'Range loop
       Result (I) := C.To_Ada (Unsafe_Index
@@ -51,9 +51,9 @@ package body C_String is
 
   function To_String
     (Item : Char_Array_Not_Null_Ptr_t;
-     Size : in C.size_t) return string
+     Size : in C.size_t) return String
   is
-    Result : string (1 .. integer (Size));
+    Result : String (1 .. Integer (Size));
   begin
     for I in Result'Range loop
       Result (I) := C.To_Ada (Unsafe_Index (Item, C.size_t (I - 1)));
@@ -61,14 +61,14 @@ package body C_String is
     return Result;
   end To_String;
 
-  function Has_Null (Item : C.char_array) return boolean is
+  function Has_Null (Item : C.char_array) return Boolean is
   begin
     for I in Item'Range loop
       if Item (I) = C.nul then
-        return true;
+        return True;
       end if;
     end loop;
-    return false;
+    return False;
   end Has_Null;
 
   function To_C_String

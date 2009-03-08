@@ -12,8 +12,8 @@ begin
 
   test.assert
     (check        => C_String.Arrays.Size_Terminated (ccall) = 6,
-     pass_message => "size " & natural'Image (C_String.Arrays.Size_Terminated (ccall)) & " = 6",
-     fail_message => "size " & natural'Image (C_String.Arrays.Size_Terminated (ccall)) & " = 6");
+     pass_message => "size " & Natural'Image (C_String.Arrays.Size_Terminated (ccall)) & " = 6",
+     fail_message => "size " & Natural'Image (C_String.Arrays.Size_Terminated (ccall)) & " = 6");
 
   IO.Put_Line ("-- Ada exit");
 end t_size1;

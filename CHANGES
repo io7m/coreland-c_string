@@ -4,3 +4,5 @@
 20090215 code: Char_Array_t -> Char_Array_Ptr_t
 20090215 code: Char_Array_Not_Null_t -> Char_Array_Not_Null_Ptr_t
 20090215 code: explicit dereferences.
+20090308 code: casing compliance.
+20090308 version: c_string 0.3.0

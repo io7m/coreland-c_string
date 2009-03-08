@@ -19,11 +19,11 @@ package body C_String.Arrays is
   --
 
   function Size_Terminated
-    (Pointer : Pointer_Array_t) return natural
+    (Pointer : Pointer_Array_t) return Natural
   is
     Current_Address : System.Address := Pointer;
     Obj_Pointer     : Memory.Object_Pointer;
-    Size            : natural := 0;
+    Size            : Natural := 0;
   begin
     loop
       Obj_Pointer := Memory.To_Pointer (Current_Address);
@@ -41,8 +41,8 @@ package body C_String.Arrays is
 
   function Index_Core
     (array_ptr : Pointer_Array_t;
-     Size      : natural;
-     Index     : natural) return string
+     Size      : Natural;
+     Index     : Natural) return String
   is
     Address_Offset  : constant Storage_Elements.Storage_Offset :=
       Storage_Elements.Storage_Offset (Index * Word_Size);
@@ -60,8 +60,8 @@ package body C_String.Arrays is
 
   function Index
     (Pointer : Pointer_Array_t;
-     Size    : natural;
-     Index   : natural) return string is
+     Size    : Natural;
+     Index   : Natural) return String is
   begin
     if Size <= Index then
       raise Constraint_Error with "Index out of range";
@@ -75,8 +75,8 @@ package body C_String.Arrays is
 
   function Index
     (Pointer : Pointer_Array_t;
-     Size    : natural;
-     Index : natural) return UStrings.Unbounded_String is
+     Size    : Natural;
+     Index   : Natural) return UStrings.Unbounded_String is
   begin
     if Size <= Index then
       raise Constraint_Error with "Index out of range";
@@ -91,7 +91,7 @@ package body C_String.Arrays is
 
   function Index_Terminated
     (Pointer : Pointer_Array_t;
-     Index   : natural) return string is
+     Index   : Natural) return String is
   begin
     return Index_Core
       (array_ptr => Pointer,
@@ -102,7 +102,7 @@ package body C_String.Arrays is
 
   function Index_Terminated
     (Pointer : Pointer_Array_t;
-     Index   : natural) return UStrings.Unbounded_String is
+     Index   : Natural) return UStrings.Unbounded_String is
   begin
     return UStrings.To_Unbounded_String
       (Index_Core
@@ -119,7 +119,7 @@ package body C_String.Arrays is
 
   function Convert
     (Pointer : Pointer_Array_t;
-     Size    : natural) return String_Array_t
+     Size    : Natural) return String_Array_t
   is
     Table : String_Array_t (0 .. Size - 1);
   begin
