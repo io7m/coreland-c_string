@@ -1,0 +1,4 @@
+This library offers a set of subprograms for converting C
+strings and C character arrays to and from Ada strings. It
+also contains subprograms for indexing into C
+string arrays and/or converting them to Ada string arrays.
