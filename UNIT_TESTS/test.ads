@@ -1,8 +1,8 @@
-package test is
+package Test is
 
-  procedure assert
-    (check        : in Boolean;
-     pass_message : in String := "assertion passed";
-     fail_message : in String := "assertion failed");
+  procedure Assert
+    (Check        : in Boolean;
+     Pass_Message : in String := "Assertion passed";
+     Fail_Message : in String := "Assertion failed");
 
-end test;
+end Test;

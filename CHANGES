@@ -6,3 +6,6 @@
 20090215 code: explicit dereferences.
 20090308 code: casing compliance.
 20090308 version: c_string 0.3.0
+20090402 code: added missing index checks in Index_Terminated.
+20090402 code: casing updates in tests.
+20090402 version: c_string 0.3.1

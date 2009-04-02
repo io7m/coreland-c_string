@@ -1,6 +1,6 @@
 with Ada.Text_IO;
 with C_String.Arrays;
-with test;
+with Test;
 
 procedure t_size1 is
   package IO renames Ada.Text_IO;
@@ -10,10 +10,10 @@ procedure t_size1 is
 begin
   IO.Put_Line ("-- Ada begin");
 
-  test.assert
-    (check        => C_String.Arrays.Size_Terminated (ccall) = 6,
-     pass_message => "size " & Natural'Image (C_String.Arrays.Size_Terminated (ccall)) & " = 6",
-     fail_message => "size " & Natural'Image (C_String.Arrays.Size_Terminated (ccall)) & " = 6");
+  Test.Assert
+    (Check        => C_String.Arrays.Size_Terminated (ccall) = 6,
+     Pass_Message => "size " & Natural'Image (C_String.Arrays.Size_Terminated (ccall)) & " = 6",
+     Fail_Message => "size " & Natural'Image (C_String.Arrays.Size_Terminated (ccall)) & " = 6");
 
   IO.Put_Line ("-- Ada exit");
 end t_size1;

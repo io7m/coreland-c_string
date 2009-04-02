@@ -91,23 +91,33 @@ package body C_String.Arrays is
 
   function Index_Terminated
     (Pointer : Pointer_Array_t;
-     Index   : Natural) return String is
+     Index   : Natural) return String
+  is
+    Size : constant Natural := Size_Terminated (Pointer);
   begin
+    if Size <= Index then
+      raise Constraint_Error with "Index out of range";
+    end if;
     return Index_Core
       (array_ptr => Pointer,
-       Size      => Size_Terminated (Pointer),
+       Size      => Size,
        Index     => Index);
   end Index_Terminated;
   pragma Inline (Index_Terminated);
 
   function Index_Terminated
     (Pointer : Pointer_Array_t;
-     Index   : Natural) return UStrings.Unbounded_String is
+     Index   : Natural) return UStrings.Unbounded_String
+  is
+    Size : constant Natural := Size_Terminated (Pointer);
   begin
+    if Size <= Index then
+      raise Constraint_Error with "Index out of range";
+    end if;
     return UStrings.To_Unbounded_String
       (Index_Core
         (array_ptr => Pointer,
-         Size      => Size_Terminated (Pointer),
+         Size      => Size,
          Index     => Index));
   end Index_Terminated;
   pragma Inline (Index_Terminated);

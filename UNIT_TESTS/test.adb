@@ -1,22 +1,22 @@
 with Ada.Text_IO;
 
-package body test is
+package body Test is
   package IO renames Ada.Text_IO;
 
-  procedure sys_exit (ecode : Integer);
-  pragma Import (c, sys_exit, "exit");
+  procedure Sys_Exit (Code : Integer);
+  pragma Import (c, Sys_Exit, "exit");
 
-  procedure assert
-    (check        : in Boolean;
-     pass_message : in String := "assertion passed";
-     fail_message : in String := "assertion failed") is
+  procedure Assert
+    (Check        : in Boolean;
+     Pass_Message : in String := "Assertion passed";
+     Fail_Message : in String := "Assertion failed") is
   begin
-    if check then
-      IO.Put_Line (IO.Current_Error, "pass: " & pass_message);
+    if Check then
+      IO.Put_Line (IO.Current_Error, "pass: " & Pass_Message);
     else
-      IO.Put_Line (IO.Current_Error, "fail: " & fail_message);
-      sys_exit (1);
+      IO.Put_Line (IO.Current_Error, "fail: " & Fail_Message);
+      Sys_Exit (1);
     end if;
-  end assert;
+  end Assert;
 
-end test;
+end Test;

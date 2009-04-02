@@ -1,6 +1,6 @@
 with C_String;
 with Interfaces.C;
-with test;
+with Test;
 
 procedure t_str1 is
   package C renames Interfaces.C;
@@ -35,48 +35,48 @@ begin
   terminated := term1;
   length := C_String.Length (terminated);
 
-  -- check conversion of terminated C strings to Ada strings.
+  -- Check conversion of terminated C strings to Ada strings.
 
-  test.assert
-    (check        => length = hello_length,
-     pass_message => "term1 Length = " & C.size_t'Image (length),
-     fail_message => "term1 Length = " & C.size_t'Image (length));
+  Test.Assert
+    (Check        => length = hello_length,
+     Pass_Message => "term1 Length = " & C.size_t'Image (length),
+     Fail_Message => "term1 Length = " & C.size_t'Image (length));
 
   declare
     Result : constant String := C_String.To_String (terminated);
   begin
-    test.assert
-      (check        => Result'Length = hello_length,
-       pass_message => "term1 Result'Length = " & Integer'Image (Result'Length),
-       fail_message => "term1 Result'Length = " & Integer'Image (Result'Length));
-    test.assert
-      (check        => Result = "hello",
-       pass_message => "term1 Result = " & Result,
-       fail_message => "term1 Result = " & Result);
+    Test.Assert
+      (Check        => Result'Length = hello_length,
+       Pass_Message => "term1 Result'Length = " & Integer'Image (Result'Length),
+       Fail_Message => "term1 Result'Length = " & Integer'Image (Result'Length));
+    Test.Assert
+      (Check        => Result = "hello",
+       Pass_Message => "term1 Result = " & Result,
+       Fail_Message => "term1 Result = " & Result);
   end;
 
-  -- check conversion of unterminated C char arrays to Ada strings.
+  -- Check conversion of unterminated C char arrays to Ada strings.
 
   unterm1 (unterminated, size);
-  test.assert
-    (check        => size = 5,
-     pass_message => "unterm1 size = 5",
-     fail_message => "unterm1 size = " & C.size_t'Image (size));
+  Test.Assert
+    (Check        => size = 5,
+     Pass_Message => "unterm1 size = 5",
+     Fail_Message => "unterm1 size = " & C.size_t'Image (size));
 
   declare
     Result : constant String := C_String.To_String (unterminated, size);
   begin
-    test.assert
-      (check        => Result'Length = hello_length,
-       pass_message => "unterm1 Result'Length = " & Integer'Image (Result'Length),
-       fail_message => "unterm1 Result'Length = " & Integer'Image (Result'Length));
-    test.assert
-      (check        => Result = "hello",
-       pass_message => "unterm1 Result = " & Result,
-       fail_message => "unterm1 Result = " & Result);
+    Test.Assert
+      (Check        => Result'Length = hello_length,
+       Pass_Message => "unterm1 Result'Length = " & Integer'Image (Result'Length),
+       Fail_Message => "unterm1 Result'Length = " & Integer'Image (Result'Length));
+    Test.Assert
+      (Check        => Result = "hello",
+       Pass_Message => "unterm1 Result = " & Result,
+       Fail_Message => "unterm1 Result = " & Result);
   end;
 
-  -- check creation of terminated C strings.
+  -- Check creation of terminated C strings.
 
   declare
     C_Array : aliased C.char_array := C.To_C ("hello", Append_Nul => True);
@@ -84,17 +84,17 @@ begin
     Result  : constant String := C_String.To_String (C_Term);
   begin
     term2 (C_Term);
-    test.assert
-      (check        => Result'Length = 5,
-       pass_message => "term2 Result'Length = " & Integer'Image (Result'Length),
-       fail_message => "term2 Result'Length = " & Integer'Image (Result'Length));
-    test.assert
-      (check        => Result = "hello",
-       pass_message => "term2 Result = " & Result,
-       fail_message => "term2 Result = " & Result);
+    Test.Assert
+      (Check        => Result'Length = 5,
+       Pass_Message => "term2 Result'Length = " & Integer'Image (Result'Length),
+       Fail_Message => "term2 Result'Length = " & Integer'Image (Result'Length));
+    Test.Assert
+      (Check        => Result = "hello",
+       Pass_Message => "term2 Result = " & Result,
+       Fail_Message => "term2 Result = " & Result);
   end;
 
-  -- check creation of unterminated character arrays.
+  -- Check creation of unterminated character arrays.
 
   declare
     Source   : constant String := "hello" & ASCII.nul & "hello";
@@ -103,17 +103,17 @@ begin
     Result   : constant String := C_String.To_String (C_Unterm, C_Array'Length);
   begin
     unterm2 (C_Unterm, C_Array'Length);
-    test.assert
-      (check        => Result'Length = Source'Length,
-       pass_message => "term2 Result'Length = " & Integer'Image (Result'Length),
-       fail_message => "term2 Result'Length = " & Integer'Image (Result'Length));
-    test.assert
-      (check        => Result = Source,
-       pass_message => "term2 Result = " & Result,
-       fail_message => "term2 Result = " & Result);
+    Test.Assert
+      (Check        => Result'Length = Source'Length,
+       Pass_Message => "term2 Result'Length = " & Integer'Image (Result'Length),
+       Fail_Message => "term2 Result'Length = " & Integer'Image (Result'Length));
+    Test.Assert
+      (Check        => Result = Source,
+       Pass_Message => "term2 Result = " & Result,
+       Fail_Message => "term2 Result = " & Result);
   end;
 
-  -- check null termination error
+  -- Check null termination error
 
   caught := False;
   begin
@@ -130,9 +130,9 @@ begin
       caught := True;
   end;
 
-  test.assert
-    (check        => caught,
-     pass_message => "caught null_termination_error",
-     fail_message => "failed to catch null_termination_error");
+  Test.Assert
+    (Check        => caught,
+     Pass_Message => "caught null_termination_error",
+     Fail_Message => "failed to catch null_termination_error");
 
 end t_str1;
