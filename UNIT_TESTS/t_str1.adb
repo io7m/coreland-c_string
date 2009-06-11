@@ -11,42 +11,42 @@ procedure t_str1 is
   pragma Import (C, term1, "cstr_terminated1");
 
   procedure term2
-    (str : in C_String.String_Ptr_t);
+    (Str : in C_String.String_Ptr_t);
   pragma Import (C, term2, "cstr_terminated2");
 
   procedure unterm1
-    (str  : out C_String.Char_Array_Ptr_t;
-     size : out C.size_t);
+    (Str  : out C_String.Char_Array_Ptr_t;
+     Size : out C.size_t);
   pragma Import (C, unterm1, "cstr_unterminated1");
 
   procedure unterm2
-    (str  : in C_String.Char_Array_Ptr_t;
-     size : in C.size_t);
+    (Str  : in C_String.Char_Array_Ptr_t;
+     Size : in C.size_t);
   pragma Import (C, unterm2, "cstr_unterminated2");
 
-  terminated   : C_String.String_Ptr_t;
-  unterminated : C_String.Char_Array_Ptr_t;
-  size         : aliased C.size_t;
-  hello_length : constant := 5;
-  length       : C.size_t;
-  caught       : Boolean := False;
+  Terminated   : C_String.String_Ptr_t;
+  Unterminated : C_String.Char_Array_Ptr_t;
+  Size         : aliased C.size_t;
+  Hello_Length : constant := 5;
+  Length       : C.size_t;
+  Caught       : Boolean := False;
 
 begin
-  terminated := term1;
-  length := C_String.Length (terminated);
+  Terminated := term1;
+  Length := C_String.Length (Terminated);
 
   -- Check conversion of terminated C strings to Ada strings.
 
   Test.Assert
-    (Check        => length = hello_length,
-     Pass_Message => "term1 Length = " & C.size_t'Image (length),
-     Fail_Message => "term1 Length = " & C.size_t'Image (length));
+    (Check        => Length = Hello_Length,
+     Pass_Message => "term1 Length = " & C.size_t'Image (Length),
+     Fail_Message => "term1 Length = " & C.size_t'Image (Length));
 
   declare
-    Result : constant String := C_String.To_String (terminated);
+    Result : constant String := C_String.To_String (Terminated);
   begin
     Test.Assert
-      (Check        => Result'Length = hello_length,
+      (Check        => Result'Length = Hello_Length,
        Pass_Message => "term1 Result'Length = " & Integer'Image (Result'Length),
        Fail_Message => "term1 Result'Length = " & Integer'Image (Result'Length));
     Test.Assert
@@ -57,17 +57,17 @@ begin
 
   -- Check conversion of unterminated C char arrays to Ada strings.
 
-  unterm1 (unterminated, size);
+  unterm1 (Unterminated, Size);
   Test.Assert
-    (Check        => size = 5,
+    (Check        => Size = 5,
      Pass_Message => "unterm1 size = 5",
-     Fail_Message => "unterm1 size = " & C.size_t'Image (size));
+     Fail_Message => "unterm1 size = " & C.size_t'Image (Size));
 
   declare
-    Result : constant String := C_String.To_String (unterminated, size);
+    Result : constant String := C_String.To_String (Unterminated, Size);
   begin
     Test.Assert
-      (Check        => Result'Length = hello_length,
+      (Check        => Result'Length = Hello_Length,
        Pass_Message => "unterm1 Result'Length = " & Integer'Image (Result'Length),
        Fail_Message => "unterm1 Result'Length = " & Integer'Image (Result'Length));
     Test.Assert
@@ -97,7 +97,7 @@ begin
   -- Check creation of unterminated character arrays.
 
   declare
-    Source   : constant String := "hello" & ASCII.nul & "hello";
+    Source   : constant String := "hello" & ASCII.NUL & "hello";
     C_Array  : aliased C.char_array := C.To_C (Source, Append_Nul => False);
     C_Unterm : constant C_String.Char_Array_Ptr_t := C_String.To_C_Char_Array (C_Array'Unchecked_Access);
     Result   : constant String := C_String.To_String (C_Unterm, C_Array'Length);
@@ -115,7 +115,7 @@ begin
 
   -- Check null termination error
 
-  caught := False;
+  Caught := False;
   begin
     declare
       C_Array : aliased C.char_array := C.To_C ("hello", Append_Nul => False);
@@ -126,12 +126,11 @@ begin
       null;
     end;
   exception
-    when C_String.Null_Termination_Error =>
-      caught := True;
+    when C_String.Null_Termination_Error => Caught := True;
   end;
 
   Test.Assert
-    (Check        => caught,
+    (Check        => Caught,
      Pass_Message => "caught null_termination_error",
      Fail_Message => "failed to catch null_termination_error");
 

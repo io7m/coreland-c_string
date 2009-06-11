@@ -18,32 +18,32 @@ begin
   IO.Put_Line ("-- Ada begin");
 
   declare
-    address : constant C_String.Arrays.Pointer_Array_t := ccall;
+    Address : constant C_String.Arrays.Pointer_Array_t := ccall;
   begin
     Test.Assert
-      (Check        =>  UStrings.To_String (C_String.Arrays.Index (address, Index => 0, size => Natural (ccall_size))) = "abcdefgh",
-       Pass_Message => "tab (0) = " & UStrings.To_String (C_String.Arrays.Index (address, Index => 0, size => Natural (ccall_size))),
-       Fail_Message => "tab (0) = " & UStrings.To_String (C_String.Arrays.Index (address, Index => 0, size => Natural (ccall_size))));
+      (Check        =>  UStrings.To_String (C_String.Arrays.Index (Address, Index => 0, Size => Natural (ccall_size))) = "abcdefgh",
+       Pass_Message => "Tab (0) = " & UStrings.To_String (C_String.Arrays.Index (Address, Index => 0, Size => Natural (ccall_size))),
+       Fail_Message => "Tab (0) = " & UStrings.To_String (C_String.Arrays.Index (Address, Index => 0, Size => Natural (ccall_size))));
     Test.Assert
-      (Check        =>  UStrings.To_String (C_String.Arrays.Index (address, Index => 1, size => Natural (ccall_size))) = "zyxwvuts",
-       Pass_Message => "tab (1) = " & UStrings.To_String (C_String.Arrays.Index (address, Index => 1, size => Natural (ccall_size))),
-       Fail_Message => "tab (1) = " & UStrings.To_String (C_String.Arrays.Index (address, Index => 1, size => Natural (ccall_size))));
+      (Check        =>  UStrings.To_String (C_String.Arrays.Index (Address, Index => 1, Size => Natural (ccall_size))) = "zyxwvuts",
+       Pass_Message => "Tab (1) = " & UStrings.To_String (C_String.Arrays.Index (Address, Index => 1, Size => Natural (ccall_size))),
+       Fail_Message => "Tab (1) = " & UStrings.To_String (C_String.Arrays.Index (Address, Index => 1, Size => Natural (ccall_size))));
     Test.Assert
-      (Check        =>  UStrings.To_String (C_String.Arrays.Index (address, Index => 2, size => Natural (ccall_size))) = "12345678",
-       Pass_Message => "tab (2) = " & UStrings.To_String (C_String.Arrays.Index (address, Index => 2, size => Natural (ccall_size))),
-       Fail_Message => "tab (2) = " & UStrings.To_String (C_String.Arrays.Index (address, Index => 2, size => Natural (ccall_size))));
+      (Check        =>  UStrings.To_String (C_String.Arrays.Index (Address, Index => 2, Size => Natural (ccall_size))) = "12345678",
+       Pass_Message => "Tab (2) = " & UStrings.To_String (C_String.Arrays.Index (Address, Index => 2, Size => Natural (ccall_size))),
+       Fail_Message => "Tab (2) = " & UStrings.To_String (C_String.Arrays.Index (Address, Index => 2, Size => Natural (ccall_size))));
     Test.Assert
-      (Check        =>  UStrings.To_String (C_String.Arrays.Index (address, Index => 3, size => Natural (ccall_size))) = "klmnopqr",
-       Pass_Message => "tab (3) = " & UStrings.To_String (C_String.Arrays.Index (address, Index => 3, size => Natural (ccall_size))),
-       Fail_Message => "tab (3) = " & UStrings.To_String (C_String.Arrays.Index (address, Index => 3, size => Natural (ccall_size))));
+      (Check        =>  UStrings.To_String (C_String.Arrays.Index (Address, Index => 3, Size => Natural (ccall_size))) = "klmnopqr",
+       Pass_Message => "Tab (3) = " & UStrings.To_String (C_String.Arrays.Index (Address, Index => 3, Size => Natural (ccall_size))),
+       Fail_Message => "Tab (3) = " & UStrings.To_String (C_String.Arrays.Index (Address, Index => 3, Size => Natural (ccall_size))));
     Test.Assert
-      (Check        =>  UStrings.To_String (C_String.Arrays.Index (address, Index => 4, size => Natural (ccall_size))) = "@@@@@@@@",
-       Pass_Message => "tab (4) = " & UStrings.To_String (C_String.Arrays.Index (address, Index => 4, size => Natural (ccall_size))),
-       Fail_Message => "tab (4) = " & UStrings.To_String (C_String.Arrays.Index (address, Index => 4, size => Natural (ccall_size))));
+      (Check        =>  UStrings.To_String (C_String.Arrays.Index (Address, Index => 4, Size => Natural (ccall_size))) = "@@@@@@@@",
+       Pass_Message => "Tab (4) = " & UStrings.To_String (C_String.Arrays.Index (Address, Index => 4, Size => Natural (ccall_size))),
+       Fail_Message => "Tab (4) = " & UStrings.To_String (C_String.Arrays.Index (Address, Index => 4, Size => Natural (ccall_size))));
     Test.Assert
-      (Check        =>  UStrings.To_String (C_String.Arrays.Index (address, Index => 5, size => Natural (ccall_size))) = "&&&&&&&&",
-       Pass_Message => "tab (5) = " & UStrings.To_String (C_String.Arrays.Index (address, Index => 5, size => Natural (ccall_size))),
-       Fail_Message => "tab (5) = " & UStrings.To_String (C_String.Arrays.Index (address, Index => 5, size => Natural (ccall_size))));
+      (Check        =>  UStrings.To_String (C_String.Arrays.Index (Address, Index => 5, Size => Natural (ccall_size))) = "&&&&&&&&",
+       Pass_Message => "Tab (5) = " & UStrings.To_String (C_String.Arrays.Index (Address, Index => 5, Size => Natural (ccall_size))),
+       Fail_Message => "Tab (5) = " & UStrings.To_String (C_String.Arrays.Index (Address, Index => 5, Size => Natural (ccall_size))));
   end;
 
   IO.Put_Line ("-- Ada exit");
