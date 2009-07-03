@@ -18,7 +18,7 @@ cstr_terminated2 (const char *str)
 void
 cstr_unterminated1 (char **str, size_t *size)
 {
-  static char buf[8];
+  static char buf [8];
 
   buf [0] = 'h';
   buf [1] = 'e';
@@ -29,8 +29,8 @@ cstr_unterminated1 (char **str, size_t *size)
   *str = buf;
   *size = 5;
 
-  printf ("C: %s: returning %c%c%c%c%c %d\n", __func__,
-    buf [0], buf [1], buf [2], buf [3], buf [4], *size);
+  printf ("C: %s: returning %c%c%c%c%c %lu\n", __func__,
+    buf [0], buf [1], buf [2], buf [3], buf [4], (unsigned long) *size);
 }
 
 void
