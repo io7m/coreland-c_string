@@ -43,5 +43,5 @@ cstr_unterminated2 (const char *str, size_t size)
   for (index = 0; index < size; ++index) {
     printf ("%.2hhx", str [index]);
   }
-  printf (" %lu\n", size);
+  printf (" %lu\n", (unsigned long) size);
 }
