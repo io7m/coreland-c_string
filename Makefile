@@ -11,9 +11,10 @@ UNIT_TESTS/t_size1.ali UNIT_TESTS/t_size1.o UNIT_TESTS/t_str1 \
 UNIT_TESTS/t_str1.ali UNIT_TESTS/t_str1.o UNIT_TESTS/test.a UNIT_TESTS/test.ali \
 UNIT_TESTS/test.o c_string-arrays.ali c_string-arrays.o c_string-conf \
 c_string-conf.o c_string.a c_string.ali c_string.o ctxt/bindir.o ctxt/ctxt.a \
-ctxt/dlibdir.o ctxt/incdir.o ctxt/repos.o ctxt/slibdir.o ctxt/version.o \
-deinstaller deinstaller.o install-core.o install-error.o install-posix.o \
-install-win32.o install.a installer installer.o instchk instchk.o insthier.o
+ctxt/dlibdir.o ctxt/fakeroot.o ctxt/incdir.o ctxt/repos.o ctxt/slibdir.o \
+ctxt/version.o deinstaller deinstaller.o generic-conf.o install-core.o \
+install-error.o install-posix.o install-win32.o install.a installer installer.o \
+instchk instchk.o insthier.o
 
 # Mkf-deinstall
 deinstall: deinstaller conf-sosuffix
@@ -39,24 +40,6 @@ tests:
 tests_clean:
 	(cd UNIT_TESTS && make clean)
 
-# -- SYSDEPS start
-_sysinfo.h:
-	@echo SYSDEPS sysinfo run create _sysinfo.h 
-	@(cd SYSDEPS/modules/sysinfo && ./run)
-
-
-sysinfo_clean:
-	@echo SYSDEPS sysinfo clean _sysinfo.h 
-	@(cd SYSDEPS/modules/sysinfo && ./clean)
-
-
-sysdeps_clean:\
-sysinfo_clean \
-
-
-# -- SYSDEPS end
-
-
 UNIT_TESTS/ccall.a:\
 cc-slib UNIT_TESTS/ccall.sld UNIT_TESTS/ccall.o
 	./cc-slib UNIT_TESTS/ccall UNIT_TESTS/ccall.o
@@ -75,12 +58,9 @@ UNIT_TESTS/ccall.o UNIT_TESTS/test.ali c_string-arrays.ali
 	./ada-bind UNIT_TESTS/t_convert1.ali
 	./ada-link UNIT_TESTS/t_convert1 UNIT_TESTS/t_convert1.ali UNIT_TESTS/ccall.o
 
-UNIT_TESTS/t_convert1.ali:\
+UNIT_TESTS/t_convert1.o UNIT_TESTS/t_convert1.ali:\
 ada-compile UNIT_TESTS/t_convert1.adb c_string-arrays.ali UNIT_TESTS/test.ali
 	./ada-compile UNIT_TESTS/t_convert1.adb
-
-UNIT_TESTS/t_convert1.o:\
-UNIT_TESTS/t_convert1.ali
 
 UNIT_TESTS/t_index1:\
 ada-bind ada-link UNIT_TESTS/t_index1.ald UNIT_TESTS/t_index1.ali \
@@ -88,12 +68,9 @@ UNIT_TESTS/ccall.o UNIT_TESTS/test.ali c_string-arrays.ali
 	./ada-bind UNIT_TESTS/t_index1.ali
 	./ada-link UNIT_TESTS/t_index1 UNIT_TESTS/t_index1.ali UNIT_TESTS/ccall.o
 
-UNIT_TESTS/t_index1.ali:\
+UNIT_TESTS/t_index1.o UNIT_TESTS/t_index1.ali:\
 ada-compile UNIT_TESTS/t_index1.adb c_string-arrays.ali UNIT_TESTS/test.ali
 	./ada-compile UNIT_TESTS/t_index1.adb
-
-UNIT_TESTS/t_index1.o:\
-UNIT_TESTS/t_index1.ali
 
 UNIT_TESTS/t_index2:\
 ada-bind ada-link UNIT_TESTS/t_index2.ald UNIT_TESTS/t_index2.ali \
@@ -101,12 +78,9 @@ UNIT_TESTS/ccall.o UNIT_TESTS/test.ali c_string-arrays.ali
 	./ada-bind UNIT_TESTS/t_index2.ali
 	./ada-link UNIT_TESTS/t_index2 UNIT_TESTS/t_index2.ali UNIT_TESTS/ccall.o
 
-UNIT_TESTS/t_index2.ali:\
+UNIT_TESTS/t_index2.o UNIT_TESTS/t_index2.ali:\
 ada-compile UNIT_TESTS/t_index2.adb c_string-arrays.ali UNIT_TESTS/test.ali
 	./ada-compile UNIT_TESTS/t_index2.adb
-
-UNIT_TESTS/t_index2.o:\
-UNIT_TESTS/t_index2.ali
 
 UNIT_TESTS/t_size1:\
 ada-bind ada-link UNIT_TESTS/t_size1.ald UNIT_TESTS/t_size1.ali \
@@ -114,12 +88,9 @@ UNIT_TESTS/ccall.o UNIT_TESTS/test.ali c_string-arrays.ali
 	./ada-bind UNIT_TESTS/t_size1.ali
 	./ada-link UNIT_TESTS/t_size1 UNIT_TESTS/t_size1.ali UNIT_TESTS/ccall.o
 
-UNIT_TESTS/t_size1.ali:\
+UNIT_TESTS/t_size1.o UNIT_TESTS/t_size1.ali:\
 ada-compile UNIT_TESTS/t_size1.adb c_string-arrays.ali UNIT_TESTS/test.ali
 	./ada-compile UNIT_TESTS/t_size1.adb
-
-UNIT_TESTS/t_size1.o:\
-UNIT_TESTS/t_size1.ali
 
 UNIT_TESTS/t_str1:\
 ada-bind ada-link UNIT_TESTS/t_str1.ald UNIT_TESTS/t_str1.ali UNIT_TESTS/cstr.o \
@@ -127,23 +98,17 @@ c_string.ali
 	./ada-bind UNIT_TESTS/t_str1.ali
 	./ada-link UNIT_TESTS/t_str1 UNIT_TESTS/t_str1.ali UNIT_TESTS/cstr.o
 
-UNIT_TESTS/t_str1.ali:\
+UNIT_TESTS/t_str1.o UNIT_TESTS/t_str1.ali:\
 ada-compile UNIT_TESTS/t_str1.adb c_string.ali UNIT_TESTS/test.ali
 	./ada-compile UNIT_TESTS/t_str1.adb
-
-UNIT_TESTS/t_str1.o:\
-UNIT_TESTS/t_str1.ali
 
 UNIT_TESTS/test.a:\
 cc-slib UNIT_TESTS/test.sld UNIT_TESTS/test.o
 	./cc-slib UNIT_TESTS/test UNIT_TESTS/test.o
 
-UNIT_TESTS/test.ali:\
+UNIT_TESTS/test.o UNIT_TESTS/test.ali:\
 ada-compile UNIT_TESTS/test.adb UNIT_TESTS/test.ads
 	./ada-compile UNIT_TESTS/test.adb
-
-UNIT_TESTS/test.o:\
-UNIT_TESTS/test.ali
 
 ada-bind:\
 conf-adabind conf-systype conf-adatype conf-adabflags conf-adafflist flags-cwd
@@ -163,12 +128,9 @@ ada-srcmap conf-adacomp conf-adatype conf-systype
 c_string-arrays.ads:\
 c_string.ali
 
-c_string-arrays.ali:\
+c_string-arrays.o c_string-arrays.ali:\
 ada-compile c_string-arrays.adb c_string.ali c_string-arrays.ads
 	./ada-compile c_string-arrays.adb
-
-c_string-arrays.o:\
-c_string-arrays.ali
 
 c_string-conf:\
 cc-link c_string-conf.ld c_string-conf.o ctxt/ctxt.a
@@ -182,18 +144,15 @@ c_string.a:\
 cc-slib c_string.sld c_string-arrays.o c_string.o
 	./cc-slib c_string c_string-arrays.o c_string.o
 
-c_string.ali:\
+c_string.o c_string.ali:\
 ada-compile c_string.adb c_string.ads
 	./ada-compile c_string.adb
 
-c_string.o:\
-c_string.ali
-
 cc-compile:\
-conf-cc conf-cctype conf-systype
+conf-cc conf-cctype conf-systype conf-cflags
 
 cc-link:\
-conf-ld conf-ldtype conf-systype
+conf-ld conf-ldtype conf-systype conf-ldflags
 
 cc-slib:\
 conf-systype
@@ -242,6 +201,15 @@ ctxt/dlibdir.o:\
 cc-compile ctxt/dlibdir.c
 	./cc-compile ctxt/dlibdir.c
 
+# ctxt/fakeroot.c.mff
+ctxt/fakeroot.c: mk-ctxt conf-fakeroot
+	rm -f ctxt/fakeroot.c
+	./mk-ctxt ctxt_fakeroot < conf-fakeroot > ctxt/fakeroot.c
+
+ctxt/fakeroot.o:\
+cc-compile ctxt/fakeroot.c
+	./cc-compile ctxt/fakeroot.c
+
 # ctxt/incdir.c.mff
 ctxt/incdir.c: mk-ctxt conf-incdir
 	rm -f ctxt/incdir.c
@@ -283,8 +251,12 @@ cc-link deinstaller.ld deinstaller.o insthier.o install.a ctxt/ctxt.a
 	./cc-link deinstaller deinstaller.o insthier.o install.a ctxt/ctxt.a
 
 deinstaller.o:\
-cc-compile deinstaller.c install.h
+cc-compile deinstaller.c install.h ctxt.h
 	./cc-compile deinstaller.c
+
+generic-conf.o:\
+cc-compile generic-conf.c ctxt.h
+	./cc-compile generic-conf.c
 
 install-core.o:\
 cc-compile install-core.c install.h
@@ -303,10 +275,8 @@ cc-compile install-win32.c install.h
 	./cc-compile install-win32.c
 
 install.a:\
-cc-slib install.sld install-core.o install-posix.o install-win32.o \
-install-error.o
-	./cc-slib install install-core.o install-posix.o install-win32.o \
-	install-error.o
+cc-slib install.sld install-core.o install-posix.o install-win32.o
+	./cc-slib install install-core.o install-posix.o install-win32.o
 
 install.h:\
 install_os.h
@@ -316,7 +286,7 @@ cc-link installer.ld installer.o insthier.o install.a ctxt/ctxt.a
 	./cc-link installer installer.o insthier.o install.a ctxt/ctxt.a
 
 installer.o:\
-cc-compile installer.c install.h
+cc-compile installer.c ctxt.h install.h
 	./cc-compile installer.c
 
 instchk:\
@@ -324,7 +294,7 @@ cc-link instchk.ld instchk.o insthier.o install.a ctxt/ctxt.a
 	./cc-link instchk instchk.o insthier.o install.a ctxt/ctxt.a
 
 instchk.o:\
-cc-compile instchk.c install.h
+cc-compile instchk.c ctxt.h install.h
 	./cc-compile instchk.c
 
 insthier.o:\
@@ -353,7 +323,7 @@ conf-systype
 mk-systype:\
 conf-cc conf-ld
 
-clean-all: sysdeps_clean tests_clean obj_clean ext_clean
+clean-all: tests_clean obj_clean ext_clean
 clean: obj_clean
 obj_clean:
 	rm -f UNIT_TESTS/ccall.a UNIT_TESTS/ccall.o UNIT_TESTS/cstr.o \
@@ -364,11 +334,11 @@ obj_clean:
 	UNIT_TESTS/t_str1 UNIT_TESTS/t_str1.ali UNIT_TESTS/t_str1.o UNIT_TESTS/test.a \
 	UNIT_TESTS/test.ali UNIT_TESTS/test.o c_string-arrays.ali c_string-arrays.o \
 	c_string-conf c_string-conf.o c_string.a c_string.ali c_string.o ctxt/bindir.c \
-	ctxt/bindir.o ctxt/ctxt.a ctxt/dlibdir.c ctxt/dlibdir.o ctxt/incdir.c \
-	ctxt/incdir.o ctxt/repos.c ctxt/repos.o ctxt/slibdir.c ctxt/slibdir.o \
-	ctxt/version.c ctxt/version.o deinstaller deinstaller.o install-core.o \
-	install-error.o install-posix.o install-win32.o install.a installer installer.o \
-	instchk instchk.o insthier.o
+	ctxt/bindir.o ctxt/ctxt.a ctxt/dlibdir.c ctxt/dlibdir.o ctxt/fakeroot.c \
+	ctxt/fakeroot.o ctxt/incdir.c ctxt/incdir.o ctxt/repos.c ctxt/repos.o \
+	ctxt/slibdir.c ctxt/slibdir.o ctxt/version.c ctxt/version.o deinstaller \
+	deinstaller.o generic-conf.o install-core.o install-error.o install-posix.o \
+	install-win32.o install.a installer installer.o instchk instchk.o insthier.o
 ext_clean:
 	rm -f conf-adatype conf-cctype conf-ldtype conf-sosuffix conf-systype mk-ctxt
 

@@ -3,9 +3,10 @@
 
 #include <errno.h>
 
-#define INSTALL_DRYRUN 0x0001
+#define INSTALL_NO_FLAGS 0x0000u
+#define INSTALL_DRYRUN   0x0001u
 
-enum {
+enum install_op_t {
   INST_COPY       = 0,
   INST_COPY_EXEC  = 1,
   INST_SYMLINK    = 2,
@@ -13,24 +14,27 @@ enum {
   INST_LIBLINK    = 4
 };
 
-struct install_status_t {
-  enum {
-    INSTALL_STATUS_OK,
-    INSTALL_STATUS_ERROR,
-    INSTALL_STATUS_FATAL
-  } status;
-  const char *message;
+enum install_status_enum_t {
+  INSTALL_STATUS_OK    = 0,
+  INSTALL_STATUS_ERROR = 1,
+  INSTALL_STATUS_FATAL = 2
 };
 
-#define INSTALL_STATUS_INIT {INSTALL_STATUS_FATAL,0}
+struct install_status_t {
+  enum install_status_enum_t status;
+  /*@dependent@*/ /*@null@*/ const char *message;
+  /*@dependent@*/ /*@null@*/ const char *error_message;
+};
+
+#define INSTALL_STATUS_INIT {INSTALL_STATUS_FATAL,0,0}
 
 struct install_item {
-  int op;
-  char *src;
-  char *dst;
-  char *dir;
-  char *owner;
-  char *group;
+  enum install_op_t op;
+  /*@dependent@*/ char *src;
+  /*@dependent@*/ char *dst;
+  /*@dependent@*/ char *dir;
+  /*@dependent@*/ char *owner;
+  /*@dependent@*/ char *group;
   int perm;
 };
 
@@ -43,6 +47,8 @@ void install_callback_warn_set (void (*)(const char *, void *));
 void install_callback_info_set (void (*)(const char *, void *));
 void install_callback_data_set (void *);
 
+void install_fake_root (const char *);
+
 const char *install_error (int);
 extern struct install_item insthier[];
 extern unsigned long insthier_len;
@@ -50,23 +56,19 @@ extern unsigned long install_failed;
 
 #ifdef INSTALL_IMPLEMENTATION
 
-#define INSTALL_MAX_PATHLEN 1024
-#define INSTALL_MAX_MSGLEN  8192
-#define INSTALL_NULL_USER_NAME ":"
-#define INSTALL_NULL_GROUP_NAME ":"
-
-extern char inst_exec_suffix [16];
-extern char inst_dlib_suffix [16];
-
-extern void (*install_callback_warn)(const char *, void *);
-extern void (*install_callback_info)(const char *, void *);
-extern void *install_callback_data;
+#define INSTALL_MAX_PATHLEN      (size_t) 1024
+#define INSTALL_MAX_MSGLEN       (size_t) 8192
+#define INSTALL_NULL_USER_NAME   ":"
+#define INSTALL_NULL_GROUP_NAME  ":"
+#define INSTALL_NULL_PERMISSIONS {0}
 
 typedef struct {
   unsigned int value;
 } permissions_t;
 
-#include "install_os.h"
+typedef struct {
+  unsigned long value;
+} error_t;
 
 enum install_file_type_t {
   INSTALL_FILE_TYPE_FILE,
@@ -77,30 +79,71 @@ enum install_file_type_t {
   INSTALL_FILE_TYPE_FIFO
 };
 
-int install_compare_gid (group_id_t, group_id_t);
-int install_compare_uid (user_id_t, user_id_t);
-int install_compare_permissions (permissions_t, permissions_t);
-int install_file_get_mode (const char *, permissions_t *);
-int install_file_get_ownership (const char *, user_id_t *, group_id_t *);
-int install_file_link (const char *, const char *);
-int install_file_set_ownership (const char *, user_id_t, group_id_t);
-int install_file_size (const char *, unsigned long *);
+extern char inst_exec_suffix [16];
+extern char inst_dlib_suffix [16];
+
+extern void (*install_callback_warn)(const char *, void *);
+extern void (*install_callback_info)(const char *, void *);
+extern void  *install_callback_data;
+
+void install_permissions_assign (permissions_t *, int);
+int  install_permissions_compare (permissions_t, permissions_t);
+
+unsigned int install_umask (unsigned int);
+
 int install_file_type (const char *, enum install_file_type_t *, int);
 int install_file_type_lookup (const char *, enum install_file_type_t *);
-int install_file_type_name_lookup (enum install_file_type_t, const char **);
-int install_gid_current (group_id_t *);
-int install_gid_lookup (const char *, group_id_t *);
-int install_mkdir (const char *, unsigned int);
-int install_uid_current (user_id_t *);
-int install_uid_lookup (const char *, user_id_t *);
-struct install_status_t install_file_copy (const char *, const char *, user_id_t, group_id_t, permissions_t);
-unsigned int install_fmt_gid (char *, group_id_t);
-unsigned int install_fmt_uid (char *, user_id_t);
-unsigned int install_scan_gid (const char *, group_id_t *);
-unsigned int install_scan_uid (const char *, user_id_t *);
-unsigned int install_umask (unsigned int);
-void install_gid_free (group_id_t *);
-void install_uid_free (user_id_t *);
-#endif
+int install_file_type_name_lookup (enum install_file_type_t, /*@dependent@*/ const char **);
 
-#endif
+#include "install_os.h"
+
+void install_status_assign (struct install_status_t *, enum install_status_enum_t, /*@null@*/ /*@dependent@*/ const char *);
+struct install_status_t install_file_copy (const char *, const char *, user_id_t, group_id_t, permissions_t);
+
+struct install_platform_callbacks_t {
+  struct install_status_t (*init) (void);
+
+  const char * (*error_message) (error_t);
+  const char * (*error_message_current) (void);
+  error_t      (*error_current) (void);
+  void         (*error_reset) (void);
+
+  int          (*gid_compare) (group_id_t, group_id_t);
+  unsigned int (*gid_format) (char *, group_id_t);
+  unsigned int (*gid_scan) (const char *, group_id_t *);
+  int          (*gid_current) (group_id_t *);
+  int          (*gid_lookup) (const char *, group_id_t *);
+  int          (*gid_valid) (group_id_t);
+  void         (*gid_free) (group_id_t *);
+
+  int          (*uid_compare) (user_id_t,  user_id_t);
+  unsigned int (*uid_format) (char *, user_id_t);
+  unsigned int (*uid_scan) (const char *, user_id_t *);
+  int          (*uid_current) (user_id_t *);
+  int          (*uid_lookup) (const char *, user_id_t *);
+  int          (*uid_valid) (user_id_t);
+  void         (*uid_free) (user_id_t *);
+
+  const char * (*user_name_current) (void);
+
+  int          (*make_dir) (const char *, permissions_t);
+
+  int          (*file_mode_get) (const char *, permissions_t *);
+  int          (*file_mode_set) (const char *file, permissions_t mode);
+  int          (*file_ownership_get) (const char *, user_id_t *, group_id_t *);
+  int          (*file_ownership_set) (const char *, user_id_t, group_id_t);
+  int          (*file_size) (const char *, size_t *);
+  int          (*file_link) (const char *, const char *);
+
+  int          (*can_set_ownership) (user_id_t);
+  int          (*supports_symlinks) (void);
+  int          (*supports_posix_modes) (void);
+  unsigned int (*umask) (unsigned int);
+};
+
+extern const struct install_platform_callbacks_t install_platform_posix;
+extern const struct install_platform_callbacks_t install_platform_win32;
+
+#endif /* INSTALL_IMPLEMENTATION */
+
+#endif /* INSTALL_H */
