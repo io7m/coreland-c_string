@@ -11,3 +11,4 @@
 20090402 version: c_string 0.3.1
 20090402 doc: added missing LICENSE.
 20091030 code: updated installer to 2.3.0.
+20091030 code: updated sysdeps to 3.0.0b

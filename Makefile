@@ -12,9 +12,9 @@ UNIT_TESTS/t_str1.ali UNIT_TESTS/t_str1.o UNIT_TESTS/test.a UNIT_TESTS/test.ali 
 UNIT_TESTS/test.o c_string-arrays.ali c_string-arrays.o c_string-conf \
 c_string-conf.o c_string.a c_string.ali c_string.o ctxt/bindir.o ctxt/ctxt.a \
 ctxt/dlibdir.o ctxt/fakeroot.o ctxt/incdir.o ctxt/repos.o ctxt/slibdir.o \
-ctxt/version.o deinstaller deinstaller.o generic-conf.o install-core.o \
-install-error.o install-posix.o install-win32.o install.a installer installer.o \
-instchk instchk.o insthier.o
+ctxt/version.o deinstaller deinstaller.o install-core.o install-error.o \
+install-posix.o install-win32.o install.a installer installer.o instchk \
+instchk.o insthier.o
 
 # Mkf-deinstall
 deinstall: deinstaller conf-sosuffix
@@ -39,6 +39,27 @@ tests:
 	(cd UNIT_TESTS && make)
 tests_clean:
 	(cd UNIT_TESTS && make clean)
+
+#----------------------------------------------------------------------
+# SYSDEPS start
+
+_sd_sysinfo.h:
+	@echo SYSDEPS sd-sysinfo run create _sd_sysinfo.h 
+	@(cd SYSDEPS && ./sd-run modules/sd-sysinfo)
+
+
+sd-sysinfo_clean:
+	@echo SYSDEPS sd-sysinfo clean _sd_sysinfo.h 
+	@(cd SYSDEPS && ./sd-clean modules/sd-sysinfo)
+
+
+sysdeps_clean:\
+sd-sysinfo_clean \
+
+
+
+# SYSDEPS end
+#----------------------------------------------------------------------
 
 UNIT_TESTS/ccall.a:\
 cc-slib UNIT_TESTS/ccall.sld UNIT_TESTS/ccall.o
@@ -137,7 +158,7 @@ cc-link c_string-conf.ld c_string-conf.o ctxt/ctxt.a
 	./cc-link c_string-conf c_string-conf.o ctxt/ctxt.a
 
 c_string-conf.o:\
-cc-compile c_string-conf.c ctxt.h _sysinfo.h
+cc-compile c_string-conf.c ctxt.h _sd_sysinfo.h
 	./cc-compile c_string-conf.c
 
 c_string.a:\
@@ -254,10 +275,6 @@ deinstaller.o:\
 cc-compile deinstaller.c install.h ctxt.h
 	./cc-compile deinstaller.c
 
-generic-conf.o:\
-cc-compile generic-conf.c ctxt.h
-	./cc-compile generic-conf.c
-
 install-core.o:\
 cc-compile install-core.c install.h
 	./cc-compile install-core.c
@@ -323,7 +340,7 @@ conf-systype
 mk-systype:\
 conf-cc conf-ld
 
-clean-all: tests_clean obj_clean ext_clean
+clean-all: sysdeps_clean tests_clean obj_clean ext_clean
 clean: obj_clean
 obj_clean:
 	rm -f UNIT_TESTS/ccall.a UNIT_TESTS/ccall.o UNIT_TESTS/cstr.o \
@@ -337,8 +354,8 @@ obj_clean:
 	ctxt/bindir.o ctxt/ctxt.a ctxt/dlibdir.c ctxt/dlibdir.o ctxt/fakeroot.c \
 	ctxt/fakeroot.o ctxt/incdir.c ctxt/incdir.o ctxt/repos.c ctxt/repos.o \
 	ctxt/slibdir.c ctxt/slibdir.o ctxt/version.c ctxt/version.o deinstaller \
-	deinstaller.o generic-conf.o install-core.o install-error.o install-posix.o \
-	install-win32.o install.a installer installer.o instchk instchk.o insthier.o
+	deinstaller.o install-core.o install-error.o install-posix.o install-win32.o \
+	install.a installer installer.o instchk instchk.o insthier.o
 ext_clean:
 	rm -f conf-adatype conf-cctype conf-ldtype conf-sosuffix conf-systype mk-ctxt
 
