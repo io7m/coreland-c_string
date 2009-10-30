@@ -4,3 +4,4 @@ incdir.o
 repos.o
 slibdir.o
 version.o
+fakeroot.o
