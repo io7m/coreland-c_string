@@ -68,7 +68,7 @@ typedef struct {
 
 typedef struct {
   unsigned long value;
-} error_t;
+} install_error_t;
 
 enum install_file_type_t {
   INSTALL_FILE_TYPE_FILE,
@@ -103,10 +103,10 @@ struct install_status_t install_file_copy (const char *, const char *, user_id_t
 struct install_platform_callbacks_t {
   struct install_status_t (*init) (void);
 
-  const char * (*error_message) (error_t);
-  const char * (*error_message_current) (void);
-  error_t      (*error_current) (void);
-  void         (*error_reset) (void);
+  const char *    (*error_message) (install_error_t);
+  const char *    (*error_message_current) (void);
+  install_error_t (*error_current) (void);
+  void            (*error_reset) (void);
 
   int          (*gid_compare) (group_id_t, group_id_t);
   unsigned int (*gid_format) (char *, group_id_t);

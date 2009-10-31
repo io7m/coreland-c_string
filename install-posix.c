@@ -27,16 +27,16 @@ iposix_init (void)
  * Error.
  */
 
-static error_t
+static install_error_t
 iposix_error_current (void)
 {
-  error_t e;
+  install_error_t e;
   e.value = (unsigned long) errno;
   return e;
 }
 
 static const char *
-iposix_error_message (error_t error)
+iposix_error_message (install_error_t error)
 {
   return strerror (error.value);
 }

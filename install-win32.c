@@ -63,16 +63,16 @@ iwin32_user_name_current (void)
  * Error.
  */
 
-static error_t
+static install_error_t
 iwin32_error_current (void)
 {
-  error_t e;
+  install_error_t e;
   e.value = GetLastError ();
   return e;
 }
 
 static const char *
-iwin32_error_message (error_t error)
+iwin32_error_message (install_error_t error)
 {
   static char buffer [8192];
   DWORD error_code = GetLastError ();
