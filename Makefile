@@ -4,7 +4,8 @@ default: all
 
 all:\
 UNIT_TESTS/ccall.a UNIT_TESTS/ccall.o UNIT_TESTS/cstr.o UNIT_TESTS/t_convert1 \
-UNIT_TESTS/t_convert1.ali UNIT_TESTS/t_convert1.o UNIT_TESTS/t_index1 \
+UNIT_TESTS/t_convert1.ali UNIT_TESTS/t_convert1.o UNIT_TESTS/t_convert2 \
+UNIT_TESTS/t_convert2.ali UNIT_TESTS/t_convert2.o UNIT_TESTS/t_index1 \
 UNIT_TESTS/t_index1.ali UNIT_TESTS/t_index1.o UNIT_TESTS/t_index2 \
 UNIT_TESTS/t_index2.ali UNIT_TESTS/t_index2.o UNIT_TESTS/t_size1 \
 UNIT_TESTS/t_size1.ali UNIT_TESTS/t_size1.o UNIT_TESTS/t_str1 \
@@ -81,6 +82,16 @@ UNIT_TESTS/ccall.o UNIT_TESTS/test.ali c_string-arrays.ali
 UNIT_TESTS/t_convert1.o UNIT_TESTS/t_convert1.ali:\
 ada-compile UNIT_TESTS/t_convert1.adb c_string-arrays.ali UNIT_TESTS/test.ali
 	./ada-compile UNIT_TESTS/t_convert1.adb
+
+UNIT_TESTS/t_convert2:\
+ada-bind ada-link UNIT_TESTS/t_convert2.ald UNIT_TESTS/t_convert2.ali \
+UNIT_TESTS/ccall.o UNIT_TESTS/test.ali c_string-arrays.ali
+	./ada-bind UNIT_TESTS/t_convert2.ali
+	./ada-link UNIT_TESTS/t_convert2 UNIT_TESTS/t_convert2.ali UNIT_TESTS/ccall.o
+
+UNIT_TESTS/t_convert2.o UNIT_TESTS/t_convert2.ali:\
+ada-compile UNIT_TESTS/t_convert2.adb c_string-arrays.ali UNIT_TESTS/test.ali
+	./ada-compile UNIT_TESTS/t_convert2.adb
 
 UNIT_TESTS/t_index1:\
 ada-bind ada-link UNIT_TESTS/t_index1.ald UNIT_TESTS/t_index1.ali \
@@ -182,11 +193,11 @@ mk-adatype
 	./mk-adatype > conf-adatype.tmp && mv conf-adatype.tmp conf-adatype
 
 conf-cctype:\
-conf-cc mk-cctype
+conf-cc conf-cc mk-cctype
 	./mk-cctype > conf-cctype.tmp && mv conf-cctype.tmp conf-cctype
 
 conf-ldtype:\
-conf-ld mk-ldtype
+conf-ld conf-ld mk-ldtype
 	./mk-ldtype > conf-ldtype.tmp && mv conf-ldtype.tmp conf-ldtype
 
 conf-sosuffix:\
@@ -340,6 +351,7 @@ clean: obj_clean
 obj_clean:
 	rm -f UNIT_TESTS/ccall.a UNIT_TESTS/ccall.o UNIT_TESTS/cstr.o \
 	UNIT_TESTS/t_convert1 UNIT_TESTS/t_convert1.ali UNIT_TESTS/t_convert1.o \
+	UNIT_TESTS/t_convert2 UNIT_TESTS/t_convert2.ali UNIT_TESTS/t_convert2.o \
 	UNIT_TESTS/t_index1 UNIT_TESTS/t_index1.ali UNIT_TESTS/t_index1.o \
 	UNIT_TESTS/t_index2 UNIT_TESTS/t_index2.ali UNIT_TESTS/t_index2.o \
 	UNIT_TESTS/t_size1 UNIT_TESTS/t_size1.ali UNIT_TESTS/t_size1.o \

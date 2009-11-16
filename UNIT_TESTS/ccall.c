@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 static const char *strings[] = {
   "abcdefgh",
@@ -28,4 +29,50 @@ ccall (void)
 
   printf ("-- C exit\n");
   return strings;
+}
+
+unsigned int
+ccall_input_term (const char **data)
+{
+  unsigned int count = 0;
+  const char *index;
+
+  printf ("-- C start\n");
+
+  for (;;) {
+    index = data [count];
+    if (index == NULL) {
+      printf ("[%u] %s\n", count, "NULL");
+      break;
+    } else {
+      printf ("[%u] %s\n", count, index);
+    }
+    ++count;
+  }
+
+  printf ("-- C exit\n");
+  return count;
+}
+
+unsigned int
+ccall_input_unterm (const char **data, unsigned int size)
+{
+  unsigned int count = 0;
+  const char *index;
+
+  printf ("-- C start\n");
+
+  for (;;) {
+    if (count == size) break;
+    index = data [count];
+    if (index == NULL) {
+      printf ("[%u] %s\n", count, "NULL");
+    } else {
+      printf ("[%u] %s\n", count, index);
+    }
+    ++count;
+  }
+
+  printf ("-- C exit\n");
+  return count;
 }
