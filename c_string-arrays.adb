@@ -8,7 +8,7 @@ package body C_String.Arrays is
   package C                renames Interfaces.C;
 
   package Memory is new System.Address_To_Access_Conversions
-    (object => C_String.String_Ptr_t);
+    (Object => C_String.String_Ptr_t);
 
   use type C_String.String_Ptr_t;
   use type Memory.Object_Pointer;
