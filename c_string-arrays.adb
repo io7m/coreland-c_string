@@ -1,9 +1,11 @@
 with System.Storage_Elements;
 with System.Address_To_Access_Conversions;
+with Interfaces.C.Strings;
 
 package body C_String.Arrays is
   package Storage_Elements renames System.Storage_Elements;
   package UStrings renames Ada.Strings.Unbounded;
+  package C                renames Interfaces.C;
 
   package Memory is new System.Address_To_Access_Conversions
     (object => C_String.String_Ptr_t);
@@ -219,15 +221,57 @@ package body C_String.Arrays is
   function Convert_Terminated
     (Strings : in String_Array_t) return Allocated_Pointer_Array_t is
   begin
-    pragma Assert (Strings'Length > 0);
-    return Allocated_Pointer_Array_t (System.Null_Address);
+    if Strings'Length = 0 then
+      raise Length_Error;
+    end if;
+
+    declare
+      type Table_t is array (Strings'First .. Strings'Last + 1) of String_Ptr_t;
+      Pointer_Array : constant access Table_t := new Table_t;
+    begin
+      for Index in Pointer_Array.all'Range loop
+        Pointer_Array.all (Index) := null;
+      end loop;
+
+      for Index in Pointer_Array.all'First .. Pointer_Array.all'Last - 1 loop
+        declare
+          New_String   : constant String                      := UB_Strings.To_String (Strings (Index));
+          New_C_String : constant C.Strings.char_array_access := new C.char_array'(C.To_C (New_String));
+        begin
+          Pointer_Array.all (Index) := To_C_String (New_C_String);
+        end;
+      end loop;
+
+      return Allocated_Pointer_Array_t (Pointer_Array.all (Strings'First)'Address);
+    end;
   end Convert_Terminated;
 
   function Convert
     (Strings : in String_Array_t) return Allocated_Pointer_Array_t is
   begin
-    pragma Assert (Strings'Length > 0);
-    return Allocated_Pointer_Array_t (System.Null_Address);
+    if Strings'Length = 0 then
+      raise Length_Error;
+    end if;
+
+    declare
+      type Table_t is array (Strings'First .. Strings'Last) of String_Ptr_t;
+      Pointer_Array : constant access Table_t := new Table_t;
+    begin
+      for Index in Pointer_Array.all'Range loop
+        Pointer_Array.all (Index) := null;
+      end loop;
+
+      for Index in Pointer_Array.all'First .. Pointer_Array.all'Last - 1 loop
+        declare
+          New_String   : constant String                      := UB_Strings.To_String (Strings (Index));
+          New_C_String : constant C.Strings.char_array_access := new C.char_array'(C.To_C (New_String));
+        begin
+          Pointer_Array.all (Index) := To_C_String (New_C_String);
+        end;
+      end loop;
+
+      return Allocated_Pointer_Array_t (Pointer_Array.all (Strings'First)'Address);
+    end;
   end Convert;
 
   procedure Deallocate_Terminated
