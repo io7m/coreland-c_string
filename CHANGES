@@ -15,3 +15,4 @@
 20091030 version: c_string 0.3.2
 20091031 code: updated installer to 2.3.1.
 20091031 version: c_string 0.3.3
+20091116 code: added 'Allocated' versions to Arrays package.
