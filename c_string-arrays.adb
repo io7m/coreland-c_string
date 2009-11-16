@@ -4,7 +4,7 @@ with Interfaces.C.Strings;
 
 package body C_String.Arrays is
   package Storage_Elements renames System.Storage_Elements;
-  package UStrings renames Ada.Strings.Unbounded;
+  package UB_Strings       renames Ada.Strings.Unbounded;
   package C                renames Interfaces.C;
 
   package Memory is new System.Address_To_Access_Conversions
@@ -98,12 +98,12 @@ package body C_String.Arrays is
   function Index
     (Pointer : in Pointer_Array_t;
      Size    : in Natural;
-     Index   : in Natural) return UStrings.Unbounded_String is
+     Index   : in Natural) return UB_Strings.Unbounded_String is
   begin
     if Size <= Index then
       raise Constraint_Error with "Index out of range";
     end if;
-    return UStrings.To_Unbounded_String
+    return UB_Strings.To_Unbounded_String
       (Index_Core
         (Array_Pointer => Pointer,
          Size          => Size,
@@ -129,14 +129,14 @@ package body C_String.Arrays is
 
   function Index_Terminated
     (Pointer : in Pointer_Array_t;
-     Index   : in Natural) return UStrings.Unbounded_String
+     Index   : in Natural) return UB_Strings.Unbounded_String
   is
     Size : constant Natural := Size_Terminated (Pointer);
   begin
     if Size <= Index then
       raise Constraint_Error with "Index out of range";
     end if;
-    return UStrings.To_Unbounded_String
+    return UB_Strings.To_Unbounded_String
       (Index_Core
         (Array_Pointer => Pointer,
          Size          => Size,
@@ -196,7 +196,7 @@ package body C_String.Arrays is
     Table : String_Array_t (0 .. Size - 1);
   begin
     for Table_Index in Table'Range loop
-      Table (Table_Index) := UStrings.To_Unbounded_String
+      Table (Table_Index) := UB_Strings.To_Unbounded_String
         (Index_Core
           (Array_Pointer => Pointer,
            Size          => Size,
