@@ -35,6 +35,12 @@ package body C_String.Arrays is
     end loop;
   end Size_Terminated;
 
+  function Size_Terminated
+    (Pointer : in Allocated_Pointer_Array_t) return Natural is
+  begin
+    return Size_Terminated (Pointer_Array_t (Pointer));
+  end Size_Terminated;
+
   --
   -- array_ptr [Index]
   --
@@ -136,6 +142,46 @@ package body C_String.Arrays is
   end Index_Terminated;
   pragma Inline (Index_Terminated);
 
+  function Index
+    (Pointer : in Allocated_Pointer_Array_t;
+     Size    : in Natural;
+     Index   : in Natural) return String is
+  begin
+    return Arrays.Index
+      (Pointer => Pointer_Array_t (Pointer),
+       Size    => Size,
+       Index   => Index);
+  end Index;
+
+  function Index
+    (Pointer : in Allocated_Pointer_Array_t;
+     Size    : in Natural;
+     Index   : in Natural) return Ada.Strings.Unbounded.Unbounded_String is
+  begin
+    return Arrays.Index
+      (Pointer => Pointer_Array_t (Pointer),
+       Size    => Size,
+       Index   => Index);
+  end;
+
+  function Index_Terminated
+    (Pointer : in Allocated_Pointer_Array_t;
+     Index   : in Natural) return String is
+  begin
+    return Index_Terminated
+      (Pointer => Pointer_Array_t (Pointer),
+       Index   => Index);
+  end Index_Terminated;
+
+  function Index_Terminated
+    (Pointer : in Allocated_Pointer_Array_t;
+     Index   : in Natural) return Ada.Strings.Unbounded.Unbounded_String is
+  begin
+    return Index_Terminated
+      (Pointer => Pointer_Array_t (Pointer),
+       Index   => Index);
+  end Index_Terminated;
+
   --
   -- for (Index = 0; Index < Size; ++Index)
   --   output [Index] = Pointer [Index]
@@ -156,5 +202,45 @@ package body C_String.Arrays is
     end loop;
     return Table;
   end Convert;
+
+  function Convert
+    (Pointer : in Allocated_Pointer_Array_t;
+     Size    : in Natural) return String_Array_t is
+  begin
+    return Convert
+      (Pointer => Pointer_Array_t (Pointer),
+       Size    => Size);
+  end Convert;
+
+  --
+  --
+  --
+
+  function Convert_Terminated
+    (Strings : in String_Array_t) return Allocated_Pointer_Array_t is
+  begin
+    pragma Assert (Strings'Length > 0);
+    return Allocated_Pointer_Array_t (System.Null_Address);
+  end Convert_Terminated;
+
+  function Convert
+    (Strings : in String_Array_t) return Allocated_Pointer_Array_t is
+  begin
+    pragma Assert (Strings'Length > 0);
+    return Allocated_Pointer_Array_t (System.Null_Address);
+  end Convert;
+
+  procedure Deallocate_Terminated
+    (Pointer : in Allocated_Pointer_Array_t) is
+  begin
+    null;
+  end Deallocate_Terminated;
+
+  procedure Deallocate
+    (Pointer : in Allocated_Pointer_Array_t;
+     Size    : in Natural) is
+  begin
+    null;
+  end Deallocate;
 
 end C_String.Arrays;
