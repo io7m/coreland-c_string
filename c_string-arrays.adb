@@ -19,7 +19,7 @@ package body C_String.Arrays is
   --
 
   function Size_Terminated
-    (Pointer : Pointer_Array_t) return Natural
+    (Pointer : in Pointer_Array_t) return Natural
   is
     Current_Address : System.Address := Pointer;
     Obj_Pointer     : Memory.Object_Pointer;
@@ -46,7 +46,7 @@ package body C_String.Arrays is
   is
     Address_Offset  : constant Storage_Elements.Storage_Offset :=
       Storage_Elements.Storage_Offset (Index * Word_Size);
-    Address_Base    : constant System.Address := array_ptr;
+    Address_Base    : constant System.Address := Array_Pointer;
     Address_Current : constant System.Address := Address_Base + Address_Offset;
     Pointer   : Memory.Object_Pointer;
   begin
@@ -59,39 +59,39 @@ package body C_String.Arrays is
   pragma Inline (Index_Core);
 
   function Index
-    (Pointer : Pointer_Array_t;
-     Size    : Natural;
-     Index   : Natural) return String is
+    (Pointer : in Pointer_Array_t;
+     Size    : in Natural;
+     Index   : in Natural) return String is
   begin
     if Size <= Index then
       raise Constraint_Error with "Index out of range";
     end if;
     return Index_Core
-      (array_ptr => Pointer,
-       Size      => Size,
-       Index     => Index);
+      (Array_Pointer => Pointer,
+       Size          => Size,
+       Index         => Index);
   end Index;
   pragma Inline (Index);
 
   function Index
-    (Pointer : Pointer_Array_t;
-     Size    : Natural;
-     Index   : Natural) return UStrings.Unbounded_String is
+    (Pointer : in Pointer_Array_t;
+     Size    : in Natural;
+     Index   : in Natural) return UStrings.Unbounded_String is
   begin
     if Size <= Index then
       raise Constraint_Error with "Index out of range";
     end if;
     return UStrings.To_Unbounded_String
       (Index_Core
-        (array_ptr => Pointer,
-         Size      => Size,
-         Index     => Index));
+        (Array_Pointer => Pointer,
+         Size          => Size,
+         Index         => Index));
   end Index;
   pragma Inline (Index);
 
   function Index_Terminated
-    (Pointer : Pointer_Array_t;
-     Index   : Natural) return String
+    (Pointer : in Pointer_Array_t;
+     Index   : in Natural) return String
   is
     Size : constant Natural := Size_Terminated (Pointer);
   begin
@@ -99,15 +99,15 @@ package body C_String.Arrays is
       raise Constraint_Error with "Index out of range";
     end if;
     return Index_Core
-      (array_ptr => Pointer,
-       Size      => Size,
-       Index     => Index);
+      (Array_Pointer => Pointer,
+       Size          => Size,
+       Index         => Index);
   end Index_Terminated;
   pragma Inline (Index_Terminated);
 
   function Index_Terminated
-    (Pointer : Pointer_Array_t;
-     Index   : Natural) return UStrings.Unbounded_String
+    (Pointer : in Pointer_Array_t;
+     Index   : in Natural) return UStrings.Unbounded_String
   is
     Size : constant Natural := Size_Terminated (Pointer);
   begin
@@ -116,9 +116,9 @@ package body C_String.Arrays is
     end if;
     return UStrings.To_Unbounded_String
       (Index_Core
-        (array_ptr => Pointer,
-         Size      => Size,
-         Index     => Index));
+        (Array_Pointer => Pointer,
+         Size          => Size,
+         Index         => Index));
   end Index_Terminated;
   pragma Inline (Index_Terminated);
 
@@ -128,17 +128,17 @@ package body C_String.Arrays is
   --
 
   function Convert
-    (Pointer : Pointer_Array_t;
-     Size    : Natural) return String_Array_t
+    (Pointer : in Pointer_Array_t;
+     Size    : in Natural) return String_Array_t
   is
     Table : String_Array_t (0 .. Size - 1);
   begin
     for Table_Index in Table'Range loop
       Table (Table_Index) := UStrings.To_Unbounded_String
         (Index_Core
-          (array_ptr => Pointer,
-           Size      => Size,
-           Index     => Table_Index));
+          (Array_Pointer => Pointer,
+           Size          => Size,
+           Index         => Table_Index));
     end loop;
     return Table;
   end Convert;
