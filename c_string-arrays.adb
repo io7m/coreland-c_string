@@ -218,7 +218,7 @@ package body C_String.Arrays is
   --
   --
 
-  function Convert_Terminated
+  function Convert_To_C_Terminated
     (Strings : in String_Array_t) return Allocated_Pointer_Array_t is
   begin
     if Strings'Length = 0 then
@@ -244,9 +244,9 @@ package body C_String.Arrays is
 
       return Allocated_Pointer_Array_t (Pointer_Array.all (Strings'First)'Address);
     end;
-  end Convert_Terminated;
+  end Convert_To_C_Terminated;
 
-  function Convert
+  function Convert_To_C
     (Strings : in String_Array_t) return Allocated_Pointer_Array_t is
   begin
     if Strings'Length = 0 then
@@ -272,7 +272,7 @@ package body C_String.Arrays is
 
       return Allocated_Pointer_Array_t (Pointer_Array.all (Strings'First)'Address);
     end;
-  end Convert;
+  end Convert_To_C;
 
   procedure Deallocate_Terminated
     (Pointer : in Allocated_Pointer_Array_t) is

@@ -14,7 +14,7 @@ begin
 
   begin
     Error := False;
-    PA    := C_String.Arrays.Convert_Terminated (SA);
+    PA    := C_String.Arrays.Convert_To_C_Terminated (SA);
     pragma Assert (PA'Size > 0);
   exception
     when C_String.Arrays.Length_Error => Error := True;

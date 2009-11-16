@@ -72,19 +72,29 @@ package C_String.Arrays is
     (Pointer : in Pointer_Array_t;
      Size    : in Natural) return String_Array_t;
 
+  function Convert_Terminated
+    (Pointer : in Pointer_Array_t) return String_Array_t;
+
   function Convert
     (Pointer : in Allocated_Pointer_Array_t;
      Size    : in Natural) return String_Array_t;
+
+  function Convert_Terminated
+    (Pointer : in Allocated_Pointer_Array_t) return String_Array_t;
 
   --
   -- Convert Ada -> C
   --
 
-  function Convert_Terminated
+  function Convert_To_C_Terminated
     (Strings : in String_Array_t) return Allocated_Pointer_Array_t;
 
-  function Convert
+  function Convert_To_C
     (Strings : in String_Array_t) return Allocated_Pointer_Array_t;
+
+  --
+  -- Deallocation
+  --
 
   procedure Deallocate_Terminated
     (Pointer : in Allocated_Pointer_Array_t);
