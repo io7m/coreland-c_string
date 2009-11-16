@@ -39,16 +39,30 @@ package body C_String.Arrays is
   -- array_ptr [Index]
   --
 
-  function Index_Core
-    (array_ptr : Pointer_Array_t;
-     Size      : Natural;
-     Index     : Natural) return String
+  function Index_Address
+    (Array_Pointer : in Pointer_Array_t;
+     Size          : in Natural;
+     Index         : in Natural) return System.Address
   is
     Address_Offset  : constant Storage_Elements.Storage_Offset :=
       Storage_Elements.Storage_Offset (Index * Word_Size);
     Address_Base    : constant System.Address := Array_Pointer;
     Address_Current : constant System.Address := Address_Base + Address_Offset;
-    Pointer   : Memory.Object_Pointer;
+  begin
+    return Address_Current;
+  end Index_Address;
+  pragma Inline (Index_Address);
+
+  function Index_Core
+    (Array_Pointer : in Pointer_Array_t;
+     Size          : in Natural;
+     Index         : in Natural) return String
+  is
+    Address_Current : constant System.Address := Index_Address
+      (Array_Pointer => Array_Pointer,
+       Size          => Size,
+       Index         => Index);
+    Pointer         : Memory.Object_Pointer;
   begin
     Pointer := Memory.To_Pointer (Address_Current);
     if Pointer.all = null then
