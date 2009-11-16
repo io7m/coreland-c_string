@@ -6,7 +6,9 @@ all:\
 UNIT_TESTS/ccall.a UNIT_TESTS/ccall.o UNIT_TESTS/cstr.o UNIT_TESTS/t_assume \
 UNIT_TESTS/t_assume.ali UNIT_TESTS/t_assume.o UNIT_TESTS/t_convert1 \
 UNIT_TESTS/t_convert1.ali UNIT_TESTS/t_convert1.o UNIT_TESTS/t_convert2 \
-UNIT_TESTS/t_convert2.ali UNIT_TESTS/t_convert2.o UNIT_TESTS/t_index1 \
+UNIT_TESTS/t_convert2.ali UNIT_TESTS/t_convert2.o UNIT_TESTS/t_convert3 \
+UNIT_TESTS/t_convert3.ali UNIT_TESTS/t_convert3.o UNIT_TESTS/t_convert4 \
+UNIT_TESTS/t_convert4.ali UNIT_TESTS/t_convert4.o UNIT_TESTS/t_index1 \
 UNIT_TESTS/t_index1.ali UNIT_TESTS/t_index1.o UNIT_TESTS/t_index2 \
 UNIT_TESTS/t_index2.ali UNIT_TESTS/t_index2.o UNIT_TESTS/t_size1 \
 UNIT_TESTS/t_size1.ali UNIT_TESTS/t_size1.o UNIT_TESTS/t_str1 \
@@ -103,6 +105,26 @@ UNIT_TESTS/ccall.o UNIT_TESTS/test.ali c_string-arrays.ali
 UNIT_TESTS/t_convert2.o UNIT_TESTS/t_convert2.ali:\
 ada-compile UNIT_TESTS/t_convert2.adb c_string-arrays.ali UNIT_TESTS/test.ali
 	./ada-compile UNIT_TESTS/t_convert2.adb
+
+UNIT_TESTS/t_convert3:\
+ada-bind ada-link UNIT_TESTS/t_convert3.ald UNIT_TESTS/t_convert3.ali \
+UNIT_TESTS/ccall.o UNIT_TESTS/test.ali c_string-arrays.ali
+	./ada-bind UNIT_TESTS/t_convert3.ali
+	./ada-link UNIT_TESTS/t_convert3 UNIT_TESTS/t_convert3.ali UNIT_TESTS/ccall.o
+
+UNIT_TESTS/t_convert3.o UNIT_TESTS/t_convert3.ali:\
+ada-compile UNIT_TESTS/t_convert3.adb c_string-arrays.ali UNIT_TESTS/test.ali
+	./ada-compile UNIT_TESTS/t_convert3.adb
+
+UNIT_TESTS/t_convert4:\
+ada-bind ada-link UNIT_TESTS/t_convert4.ald UNIT_TESTS/t_convert4.ali \
+UNIT_TESTS/ccall.o UNIT_TESTS/test.ali c_string-arrays.ali
+	./ada-bind UNIT_TESTS/t_convert4.ali
+	./ada-link UNIT_TESTS/t_convert4 UNIT_TESTS/t_convert4.ali UNIT_TESTS/ccall.o
+
+UNIT_TESTS/t_convert4.o UNIT_TESTS/t_convert4.ali:\
+ada-compile UNIT_TESTS/t_convert4.adb c_string-arrays.ali UNIT_TESTS/test.ali
+	./ada-compile UNIT_TESTS/t_convert4.adb
 
 UNIT_TESTS/t_index1:\
 ada-bind ada-link UNIT_TESTS/t_index1.ald UNIT_TESTS/t_index1.ali \
@@ -204,7 +226,7 @@ mk-adatype
 	./mk-adatype > conf-adatype.tmp && mv conf-adatype.tmp conf-adatype
 
 conf-cctype:\
-conf-cc conf-cc mk-cctype
+conf-cc mk-cctype
 	./mk-cctype > conf-cctype.tmp && mv conf-cctype.tmp conf-cctype
 
 conf-ldtype:\
@@ -364,6 +386,8 @@ obj_clean:
 	UNIT_TESTS/t_assume UNIT_TESTS/t_assume.ali UNIT_TESTS/t_assume.o \
 	UNIT_TESTS/t_convert1 UNIT_TESTS/t_convert1.ali UNIT_TESTS/t_convert1.o \
 	UNIT_TESTS/t_convert2 UNIT_TESTS/t_convert2.ali UNIT_TESTS/t_convert2.o \
+	UNIT_TESTS/t_convert3 UNIT_TESTS/t_convert3.ali UNIT_TESTS/t_convert3.o \
+	UNIT_TESTS/t_convert4 UNIT_TESTS/t_convert4.ali UNIT_TESTS/t_convert4.o \
 	UNIT_TESTS/t_index1 UNIT_TESTS/t_index1.ali UNIT_TESTS/t_index1.o \
 	UNIT_TESTS/t_index2 UNIT_TESTS/t_index2.ali UNIT_TESTS/t_index2.o \
 	UNIT_TESTS/t_size1 UNIT_TESTS/t_size1.ali UNIT_TESTS/t_size1.o \
@@ -373,8 +397,9 @@ obj_clean:
 	ctxt/bindir.o ctxt/ctxt.a ctxt/dlibdir.c ctxt/dlibdir.o ctxt/fakeroot.c \
 	ctxt/fakeroot.o ctxt/incdir.c ctxt/incdir.o ctxt/repos.c ctxt/repos.o \
 	ctxt/slibdir.c ctxt/slibdir.o ctxt/version.c ctxt/version.o deinstaller \
-	deinstaller.o install-core.o install-posix.o install-win32.o install.a \
-	installer installer.o instchk instchk.o insthier.o
+	deinstaller.o install-core.o
+	rm -f install-posix.o install-win32.o install.a installer installer.o instchk \
+	instchk.o insthier.o
 ext_clean:
 	rm -f conf-adatype conf-cctype conf-ldtype conf-sosuffix conf-systype mk-ctxt
 
