@@ -214,6 +214,22 @@ package body C_String.Arrays is
        Size    => Size);
   end Convert;
 
+  function Convert_Terminated
+    (Pointer : in Allocated_Pointer_Array_t) return String_Array_t is
+  begin
+    return Convert
+      (Pointer => Pointer_Array_t (Pointer),
+       Size    => Size_Terminated (Pointer));
+  end Convert_Terminated;
+
+  function Convert_Terminated
+    (Pointer : in Pointer_Array_t) return String_Array_t is
+  begin
+    return Convert
+      (Pointer => Pointer,
+       Size    => Size_Terminated (Pointer));
+  end Convert_Terminated;
+
   --
   --
   --
