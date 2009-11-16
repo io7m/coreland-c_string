@@ -11,6 +11,8 @@ package C_String.Arrays is
 
   type Allocated_Pointer_Array_t is new Pointer_Array_t;
 
+  Length_Error : exception;
+
   --
   -- Find NULL
   --
