@@ -1,0 +1,20 @@
+-- Ada begin
+-- C start
+[0] string 0
+[1] string 1
+[2] string 2
+[3] string 3
+[4] string 4
+[5] NULL
+-- C exit
+-- C start
+[0] string 2
+[1] string 3
+[2] NULL
+-- C exit
+-- C start
+[0] string 3
+[1] string 4
+[2] NULL
+-- C exit
+-- Ada exit

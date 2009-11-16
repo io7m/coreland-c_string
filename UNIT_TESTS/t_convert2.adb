@@ -28,9 +28,15 @@ begin
   IO.Put_Line ("-- Ada begin");
 
   PA := C_String.Arrays.Convert_Terminated (SA);
-
   Test.Assert (ccall_input_term (PA) = 5);
+  C_String.Arrays.Deallocate_Terminated (PA);
 
+  PA := C_String.Arrays.Convert_Terminated (SA (2 .. 3));
+  Test.Assert (ccall_input_term (PA) = 2);
+  C_String.Arrays.Deallocate_Terminated (PA);
+
+  PA := C_String.Arrays.Convert_Terminated (SA (3 .. 4));
+  Test.Assert (ccall_input_term (PA) = 2);
   C_String.Arrays.Deallocate_Terminated (PA);
 
   IO.Put_Line ("-- Ada exit");

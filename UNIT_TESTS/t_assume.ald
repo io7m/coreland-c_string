@@ -1,0 +1,4 @@
+t_assume.ali
+ccall.o
+test.ali
+../c_string-arrays.ali

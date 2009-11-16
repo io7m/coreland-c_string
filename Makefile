@@ -3,7 +3,8 @@
 default: all
 
 all:\
-UNIT_TESTS/ccall.a UNIT_TESTS/ccall.o UNIT_TESTS/cstr.o UNIT_TESTS/t_convert1 \
+UNIT_TESTS/ccall.a UNIT_TESTS/ccall.o UNIT_TESTS/cstr.o UNIT_TESTS/t_assume \
+UNIT_TESTS/t_assume.ali UNIT_TESTS/t_assume.o UNIT_TESTS/t_convert1 \
 UNIT_TESTS/t_convert1.ali UNIT_TESTS/t_convert1.o UNIT_TESTS/t_convert2 \
 UNIT_TESTS/t_convert2.ali UNIT_TESTS/t_convert2.o UNIT_TESTS/t_index1 \
 UNIT_TESTS/t_index1.ali UNIT_TESTS/t_index1.o UNIT_TESTS/t_index2 \
@@ -72,6 +73,16 @@ cc-compile UNIT_TESTS/ccall.c
 UNIT_TESTS/cstr.o:\
 cc-compile UNIT_TESTS/cstr.c
 	./cc-compile UNIT_TESTS/cstr.c
+
+UNIT_TESTS/t_assume:\
+ada-bind ada-link UNIT_TESTS/t_assume.ald UNIT_TESTS/t_assume.ali \
+UNIT_TESTS/ccall.o UNIT_TESTS/test.ali c_string-arrays.ali
+	./ada-bind UNIT_TESTS/t_assume.ali
+	./ada-link UNIT_TESTS/t_assume UNIT_TESTS/t_assume.ali UNIT_TESTS/ccall.o
+
+UNIT_TESTS/t_assume.o UNIT_TESTS/t_assume.ali:\
+ada-compile UNIT_TESTS/t_assume.adb c_string.ali UNIT_TESTS/test.ali
+	./ada-compile UNIT_TESTS/t_assume.adb
 
 UNIT_TESTS/t_convert1:\
 ada-bind ada-link UNIT_TESTS/t_convert1.ald UNIT_TESTS/t_convert1.ali \
@@ -197,7 +208,7 @@ conf-cc conf-cc mk-cctype
 	./mk-cctype > conf-cctype.tmp && mv conf-cctype.tmp conf-cctype
 
 conf-ldtype:\
-conf-ld conf-ld mk-ldtype
+conf-ld mk-ldtype
 	./mk-ldtype > conf-ldtype.tmp && mv conf-ldtype.tmp conf-ldtype
 
 conf-sosuffix:\
@@ -350,6 +361,7 @@ clean-all: sysdeps_clean tests_clean obj_clean ext_clean
 clean: obj_clean
 obj_clean:
 	rm -f UNIT_TESTS/ccall.a UNIT_TESTS/ccall.o UNIT_TESTS/cstr.o \
+	UNIT_TESTS/t_assume UNIT_TESTS/t_assume.ali UNIT_TESTS/t_assume.o \
 	UNIT_TESTS/t_convert1 UNIT_TESTS/t_convert1.ali UNIT_TESTS/t_convert1.o \
 	UNIT_TESTS/t_convert2 UNIT_TESTS/t_convert2.ali UNIT_TESTS/t_convert2.o \
 	UNIT_TESTS/t_index1 UNIT_TESTS/t_index1.ali UNIT_TESTS/t_index1.o \

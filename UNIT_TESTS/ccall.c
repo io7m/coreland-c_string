@@ -76,3 +76,13 @@ ccall_input_unterm (const char **data, unsigned int size)
   printf ("-- C exit\n");
   return count;
 }
+
+/*
+ * Test the assumption that an Ada String_Ptr_t null == C NULL.
+ */
+
+int
+ccall_assume (const char *data)
+{
+  return data == NULL;
+}
