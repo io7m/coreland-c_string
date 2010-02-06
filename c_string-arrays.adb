@@ -164,7 +164,7 @@ package body C_String.Arrays is
       (Pointer => Pointer_Array_t (Pointer),
        Size    => Size,
        Index   => Index);
-  end;
+  end Index;
 
   function Index_Terminated
     (Pointer : in Allocated_Pointer_Array_t;
